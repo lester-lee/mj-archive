@@ -1,6 +1,6 @@
 <template>
-  <div class="Play">
-    <h1>This is the play area.</h1>
+  <div class="Table">
+    <h1>This is the table.</h1>
   </div>
 </template>
 

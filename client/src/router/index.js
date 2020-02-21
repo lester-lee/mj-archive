@@ -4,7 +4,7 @@ import Router from 'vue-router';
 // Components
 import HelloWorld from '@/components/HelloWorld';
 import Login from '@/components/Login';
-import Play from '@/components/Play';
+import Table from '@/components/Table';
 
 Vue.use(Router);
 
@@ -21,9 +21,9 @@ export default new Router({
       component: Login
     },
     {
-      path: '/play',
-      name: 'Play',
-      component: Play
+      path: '/table',
+      name: 'Table',
+      component: Table
     }
   ]
 })
