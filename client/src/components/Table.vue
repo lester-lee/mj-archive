@@ -1,12 +1,17 @@
 <template>
   <div class="Table">
-    <h1>This is the table.</h1>
+    {{ gameId }}
   </div>
 </template>
 
 <script>
 export default {
-
+  //props: ['hands', 'melds', 'discardPile', 'gameId', 'playerNum']
+  computed: {
+    gameId: function () {
+      return this.$root.$data.gameId;
+    }
+  }
 }
 </script>
 

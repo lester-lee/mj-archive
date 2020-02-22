@@ -19,6 +19,7 @@ export default {
 <style lang="scss">
 .Login{
   width: 200px;
+  height: 200px;
   margin: 20vh auto;
   &Field{
     display: flex;
