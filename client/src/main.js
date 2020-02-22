@@ -6,7 +6,6 @@ import attachListeners from './io';
 
 Vue.config.productionTip = false;
 
-
 // Game state
 let store = {
   gameId: '12345',
