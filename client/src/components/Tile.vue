@@ -1,5 +1,8 @@
 <template>
-  <li :class="['Tile', canHover ? 'canHover' : '']">
+  <li 
+    :class="['Tile', canHover ? 'canHover' : '']"
+    @click="show ? onTileClick(tile, store) : () => {}"
+  >
     <img v-if="show" :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
     <img v-else :src="tile.downUrl" alt="Facedown tile"/>
   </li>
@@ -7,7 +10,24 @@
 
 <script>
 export default {
-  props: ['tile', 'canHover', 'show']
+  props: ['tile', 'canHover', 'show'],
+  methods: {
+    onTileClick: (tile, store) => {
+      if (tile.suit >= 5){ // 5 is FLOWER
+        return;
+      }
+      store.socket.emit('discard tile', {
+        gameId: store.gameId,
+        playerNum: store.playerNum,
+        discard: tile,
+      });
+    }
+  },
+  computed: {
+    store: function() {
+      return this.$root.$data;
+    }
+  }
 }
 </script>
 

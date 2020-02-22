@@ -6,6 +6,9 @@ import attachListeners from './io';
 
 Vue.config.productionTip = false;
 
+// Socket connections
+const socket = io('http://localhost:4000');
+
 // Game state
 let store = {
   gameId: '12345',
@@ -14,10 +17,9 @@ let store = {
   discardPile: [],
   playerNum: 0,
   myTurn: false,
+  socket: socket,
 };
 
-// Socket connections
-const socket = io('http://localhost:4000');
 attachListeners(socket, store);
 
 new Vue({

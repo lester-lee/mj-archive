@@ -1,47 +1,52 @@
 <template>
   <div class="Table">
-    <ul class="Hand"
-      v-for="(hand,index) in store.hands"
-      v-bind:key="index"
-    >
-      <div class="Melds">
-      <Tile
-        v-for="tile in store.melds[index]"
-        :key="tile.id"
-        :tile="tile"
-        :show="true"
-      />
-      </div>
-      <div>
-      <Tile
-        v-for="tile in hand"
-        :key="tile.id"
-        :tile="tile"
-        :canHover="index === store.playerNum ? true : false"
-        :show="index === store.playerNum ? true : false"
-      />
-      </div>
+    <ul class="PlayerHands">
+      <ul class="Hand" v-for="(hand,index) in store.hands" v-bind:key="index">
+        <div class="Melds">
+          <Tile v-for="tile in store.melds[index]" :key="tile.id" :tile="tile" :show="true" />
+        </div>
+        <div>
+          <Tile
+            v-for="tile in hand"
+            :key="tile.id"
+            :tile="tile"
+            :canHover="index === store.playerNum ? true : false"
+            :show="index === store.playerNum ? true : false"
+          />
+        </div>
+      </ul>
+    </ul>
+
+    <ul class="DiscardPile">
+      <ul class="Hand" v-for="(pile, index) in store.discardPile" v-bind:key="index">
+        <Tile
+          v-for="tile in pile"
+          :key="tile.id"
+          :tile="tile"
+          :show="true"
+        />
+      </ul>
     </ul>
   </div>
 </template>
 
 <script>
-import Tile from './Tile';
+import Tile from "./Tile";
 export default {
   //props: ['hands', 'melds', 'discardPile', 'gameId', 'playerNum']
   computed: {
-    store: function () {
+    store: function() {
       return this.$root.$data;
     }
   },
   components: {
     Tile
   }
-}
+};
 </script>
 
 <style>
-.Hand{
+.Hand {
   padding: 0;
   border: 1px solid #bbb;
   border-radius: 5px;
@@ -50,5 +55,4 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-
 </style>
