@@ -1,7 +1,7 @@
 <template>
   <li :class="['Tile', canHover ? 'canHover' : '']">
     <img v-if="show" :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
-    <img v-if="!show" :src="tile.downUrl" alt="Facedown tile"/>
+    <img v-else :src="tile.downUrl" alt="Facedown tile"/>
   </li>
 </template>
 
