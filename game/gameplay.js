@@ -11,6 +11,7 @@ function createGame(id) {
   let wall = createWall();
   let hands = createHands(wall);
   let melds = findFlowers(hands, wall);
+  console.log(hands);
 
   return {
     id: id,

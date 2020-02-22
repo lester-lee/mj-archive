@@ -54,6 +54,7 @@ module.exports = {
   compareTiles,
   equals,
   NUMBER,
+  BAMBOO,
   DOTS,
   WIND,
   DRAGON,
