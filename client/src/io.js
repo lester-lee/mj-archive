@@ -1,5 +1,5 @@
 export default function attachListeners(socket, store) {
-  socket.emit('new game', 'id1234');
+  socket.emit('new game', '');
   socket.on('new game', game => {
     store.gameId = game.id;
     socket.emit('update tiles', {
