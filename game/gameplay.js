@@ -10,8 +10,7 @@ function createGame(id) {
   id = id || uuidv4();
   let wall = createWall();
   let hands = createHands(wall);
-  let melds = findFlowers(hands, wall);
-  console.log(hands);
+  let melds = findFlowers(hands, wall); 
 
   return {
     id: id,

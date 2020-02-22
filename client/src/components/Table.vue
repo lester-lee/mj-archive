@@ -4,11 +4,23 @@
       v-for="(hand,index) in store.hands"
       v-bind:key="index"
     >
+      <div class="Melds">
+      <Tile
+        v-for="tile in store.melds[index]"
+        :key="tile.id"
+        :tile="tile"
+        :show="true"
+      />
+      </div>
+      <div>
       <Tile
         v-for="tile in hand"
-        v-bind:key="tile.id"
+        :key="tile.id"
         :tile="tile"
+        :canHover="index === store.playerNum ? true : false"
+        :show="index === store.playerNum ? true : false"
       />
+      </div>
     </ul>
   </div>
 </template>
@@ -35,6 +47,8 @@ export default {
   border-radius: 5px;
   list-style-type: none;
   width: 75%;
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>

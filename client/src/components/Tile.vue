@@ -1,12 +1,13 @@
 <template>
-  <li class="Tile">
-    <img :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
+  <li :class="['Tile', canHover ? 'canHover' : '']">
+    <img v-if="show" :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
+    <img v-if="!show" :src="tile.downUrl" alt="Facedown tile"/>
   </li>
 </template>
 
 <script>
 export default {
-  props: ['tile']
+  props: ['tile', 'canHover', 'show']
 }
 </script>
 
