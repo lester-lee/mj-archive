@@ -18,11 +18,13 @@ function attachListeners(io) {
     })
 
     socket.on('update tiles', info => {
+      console.log(info);
       io.emit('update hand', games[info.gameId].hands);
       io.emit('update melds', games[info.gameId].melds);
     })
 
     socket.on('discard tile', info => {
+      console.log(info);
       let g = games[info.gameId];
       G.handleDiscard(g, info.playerNum, info.discard);
       io.emit('update hand', g.hands);
