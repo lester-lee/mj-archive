@@ -1,7 +1,6 @@
 const G = require('./gameplay');
 
-function attachListeners(io) {
-  let games = {};
+function attachListeners(io, games) {
 
   io.on('connection', socket => {
     console.log('user connected');

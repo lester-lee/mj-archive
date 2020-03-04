@@ -3,13 +3,13 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const attachListeners = require('./game/io');
 
+let games = {};
+
 app.get('/', (req, res) => {
-  res.json({
-    message: "Hello yo"
-  });
+  res.json(games);
 });
 
-attachListeners(io);
+attachListeners(io, games);
 
 const port = process.env.PORT || 4000;
 
