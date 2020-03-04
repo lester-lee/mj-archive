@@ -29,7 +29,7 @@ export default {
     goToTable: function() {
       let store = this.$root.$data;
       if(store.username){
-        store.socket.emit("new game", store.gameId);
+        store.socket.emit("join game", store.gameId);
         this.$router.push("/table");
       }else{
         this.usernameError = true;
