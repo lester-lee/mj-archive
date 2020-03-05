@@ -36,6 +36,7 @@ export default {
   user-select: none;
   display: inline-block;
   width: 3.5vw;
+  max-width: 29px;
   img {
     max-width: 100%;
   }

@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss">
-$hand-width: 80%;
+$hand-width: 90%;
 .Hand {
   padding: 0;
   border: 1px solid #bbb;
