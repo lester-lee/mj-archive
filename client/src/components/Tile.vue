@@ -35,7 +35,7 @@ export default {
 .Tile{
   user-select: none;
   display: inline-block;
-  width: 50px;
+  width: 3.5vw;
   img {
     max-width: 100%;
   }

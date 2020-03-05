@@ -13,7 +13,7 @@ export default {
 <style lang="scss">
 
 $font: Avenir, Helvetica, Arial, sans-serif;
-$table-width: 1280px;
+$table-width: 720px;
 $table-height: 80vh;
 
 #app {
@@ -21,10 +21,10 @@ $table-height: 80vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin: (100vh - $table-height)/2 auto;
+  margin: auto;
   width: 50%;
   min-width: $table-width;
-  height: $table-height;
+  height: $table-width;
   border: 1px solid red;
   position: relative;
 }

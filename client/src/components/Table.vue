@@ -4,10 +4,17 @@
       <Hand
         :hand="store.hands[store.playerNum]"
         :melds="store.melds[store.playerNum]"
-        :isPlayerHand="true"
+        isPlayerHand="true"
         position="bottom"
       />
-
+      <Hand
+        v-for="(hand,index) in opponentHands"
+        :key="index"
+        :hand="opponentHands[index]"
+        :melds="opponentMelds[index]"
+        :position="positions[index]"
+      />
+      <!-- TODO: figure out corresponding positions -->
 
 <!--
       <ul class="Hand" v-for="(hand,index) in store.hands" v-bind:key="index">
@@ -48,7 +55,18 @@ export default {
   computed: {
     store: function() {
       return this.$root.$data;
-    }
+    },
+    opponentHands: function() {
+      let s = this.$root.$data;
+      let hL = s.hands.slice(0,s.playerNum);
+      let hR = s.hands.slice(s.playerNum+1);
+      return hL.concat(hR);
+    },
+    opponentMelds: function() {
+      let s = this.$root.$data;
+      return s.melds.splice(s.playerNum, 1);
+    },
+    positions: () => ['left', 'top', 'right']
   },
   components: { Tile, Hand }
 };
