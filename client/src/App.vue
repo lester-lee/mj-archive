@@ -26,6 +26,7 @@ $table-height: 80vh;
   min-width: $table-width;
   height: $table-height;
   border: 1px solid red;
+  position: relative;
 }
 
 html {

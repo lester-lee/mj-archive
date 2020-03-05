@@ -33,12 +33,19 @@ export default {
   border: 1px solid #bbb;
   border-radius: 5px;
   list-style-type: none;
-  width: 75%;
+  width: 76%;
   display: flex;
   justify-content: space-between;
+  position: absolute;
   ul {
     padding: 0;
     margin: 0;
   }
+
+  &.bottom{
+    bottom: 0;
+    left: 12%;
+  }
+
 }
 </style>
