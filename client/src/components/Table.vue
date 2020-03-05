@@ -1,6 +1,15 @@
 <template>
   <div class="Table">
-    <ul class="PlayerHands">
+    <div class="PlayerHands">
+      <Hand
+        :hand="store.hands[store.playerNum]"
+        :melds="store.melds[store.playerNum]"
+        :isPlayerHand="true"
+        position="bottom"
+      />
+
+
+<!--
       <ul class="Hand" v-for="(hand,index) in store.hands" v-bind:key="index">
         <div class="Melds">
           <Tile v-for="tile in store.melds[index]" :key="tile.id" :tile="tile" :show="true" />
@@ -15,7 +24,8 @@
           />
         </div>
       </ul>
-    </ul>
+-->
+    </div>
 
     <ul class="DiscardPile">
       <ul class="Hand" v-for="(pile, index) in store.discardPile" v-bind:key="index">
@@ -32,6 +42,7 @@
 
 <script>
 import Tile from "./Tile";
+import Hand from "./Hand";
 export default {
   //props: ['hands', 'melds', 'discardPile', 'gameId', 'playerNum']
   computed: {
@@ -39,20 +50,9 @@ export default {
       return this.$root.$data;
     }
   },
-  components: {
-    Tile
-  }
+  components: { Tile, Hand }
 };
 </script>
 
 <style>
-.Hand {
-  padding: 0;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-  list-style-type: none;
-  width: 75%;
-  display: flex;
-  justify-content: space-between;
-}
 </style>

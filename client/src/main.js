@@ -11,8 +11,8 @@ const socket = io('http://localhost:4000');
 
 // Game state
 let store = {
-  gameId: '',
-  username: '',
+  gameId: 'asdf',
+  username: 'username',
   hands: [],
   melds: [],
   discardPile: [],
