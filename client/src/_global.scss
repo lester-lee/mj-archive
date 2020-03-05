@@ -1,0 +1,37 @@
+$font: Avenir,
+Helvetica,
+Arial,
+sans-serif;
+
+// Table
+$table-width: 720px;
+$table-height: 80vh;
+
+// Hand
+$hand-width: 90%;
+
+// Tiles
+$t-width: 3.5vw;
+$t-max-width: 29px;
+$t-height: 3.3vw;
+
+// Discard
+$d-width: $t-width * 6;
+$d-max-width: $t-max-width * 6;
+
+
+// Mixins
+@mixin center-in-parent{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin fill-parent{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

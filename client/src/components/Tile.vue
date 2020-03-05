@@ -1,5 +1,5 @@
 <template>
-  <li 
+  <li
     :class="['Tile', canHover ? 'canHover' : '']"
     @click="show ? onTileClick(tile, store) : () => {}"
   >
@@ -35,9 +35,9 @@ export default {
 .Tile{
   user-select: none;
   display: inline-block;
-  width: 3.5vw;
-  max-width: 29px;
-  height: 3.3vw;
+  width: $t-width;
+  max-width: $t-max-width;
+  height: $t-height;
   img {
     max-width: 100%;
   }

@@ -29,13 +29,15 @@ export default {
 </script>
 
 <style lang="scss">
-$hand-width: 90%;
 .Hand {
   border: 1px solid #bbb;
   border-radius: 5px;
+
   list-style-type: none;
+
   width: $hand-width;
-  height: 3.3vw;
+  height: $t-height;
+
   display: flex;
   justify-content: space-between;
   position: absolute;
@@ -61,9 +63,5 @@ $hand-width: 90%;
     right: -$hand-width;
     bottom: 0;
   }
-}
-
-.Melds{
-  min-width: 50x;
 }
 </style>

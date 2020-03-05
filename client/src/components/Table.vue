@@ -19,9 +19,9 @@
 
     <div class="DiscardPile">
       <Discard
-        v-for="(pile, index) in store.discardPile"
+        v-for="(pile, index) in store.hands"
         :key="index"
-        :tiles="store.discardPile[index]"
+        :tiles="store.hands[index]"
         :position="positions[index]"
       />
     </div>
@@ -56,20 +56,13 @@ export default {
 
 <style lang="scss">
 .Table, .PlayerHands{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  @include fill-parent;
 }
 .DiscardPile{
-  max-width: 174px;
-  width: 28vw;
-  height: 28vw;
-  max-height: 174px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @include center-in-parent;
+  width: $d-width;
+  max-width: $d-max-width;
+  height: $d-width;
+  max-height: $d-max-width;
 }
 </style>

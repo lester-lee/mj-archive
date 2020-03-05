@@ -19,33 +19,34 @@ export default {
 
 <style lang="scss">
 .Discard{
-  width: 180px;
-  max-width: 28vw;
-  height: 3.3vw;
+  width: $d-width;
+  max-width: $d-max-width;
+  height: $t-height;
+
   position: absolute;
   display: flex;
   flex-flow: wrap;
 
   &.bottom{
-    bottom: -3.3vw;
+    bottom: -$t-height;
   }
 
   &.top{
     transform: rotate(180deg);
     right: 0;
-    top: -3.3vw;
+    top: -$t-height;
   }
 
   &.left{
     transform: rotate(90deg) translateY(-100%);
     transform-origin: top left;
-    left: -3.3vw;
+    left: -$t-height;
   }
 
   &.right{
     transform: rotate(-90deg);
     transform-origin: bottom left;
-    right: calc(-100% - 3.5vw);
+    right: calc(-100% - #{$t-height});
     bottom: 0;
   }
 }

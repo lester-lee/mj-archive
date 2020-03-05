@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // Components
-import HelloWorld from '@/components/HelloWorld';
 import Login from '@/components/Login';
 import Table from '@/components/Table';
 

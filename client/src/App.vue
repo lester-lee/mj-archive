@@ -12,10 +12,6 @@ export default {
 
 <style lang="scss">
 
-$font: Avenir, Helvetica, Arial, sans-serif;
-$table-width: 720px;
-$table-height: 80vh;
-
 #app {
   font-family: $font;
   -webkit-font-smoothing: antialiased;
