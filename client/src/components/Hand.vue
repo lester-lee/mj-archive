@@ -4,7 +4,8 @@
       <Tile
         v-for="tile in melds"
         :key="tile.id"
-        :tile="tile" :show="true"
+        :tile="tile"
+        :show="true"
       />
     </ul>
     <ul>
@@ -22,7 +23,7 @@
 <script>
 import Tile from './Tile';
 export default {
-  props: ["hand", "melds", "isPlayerHand", "position"],
+  props: ['hand', 'melds', 'isPlayerHand', 'position'],
   components: {Tile}
 };
 </script>
@@ -30,18 +31,14 @@ export default {
 <style lang="scss">
 $hand-width: 90%;
 .Hand {
-  padding: 0;
   border: 1px solid #bbb;
   border-radius: 5px;
   list-style-type: none;
   width: $hand-width;
+  height: 3.3vw;
   display: flex;
   justify-content: space-between;
   position: absolute;
-  ul {
-    padding: 0;
-    margin: 0;
-  }
 
   &.bottom{
     bottom: 0;

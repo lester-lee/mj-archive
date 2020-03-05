@@ -12,44 +12,26 @@
         :key="index"
         :hand="opponentHands[index]"
         :melds="opponentMelds[index]"
-        :position="positions[index]"
+        :position="positions[index+1]"
       />
       <!-- TODO: figure out corresponding positions -->
-
-<!--
-      <ul class="Hand" v-for="(hand,index) in store.hands" v-bind:key="index">
-        <div class="Melds">
-          <Tile v-for="tile in store.melds[index]" :key="tile.id" :tile="tile" :show="true" />
-        </div>
-        <div>
-          <Tile
-            v-for="tile in hand"
-            :key="tile.id"
-            :tile="tile"
-            :canHover="index === store.playerNum ? true : false"
-            :show="index === store.playerNum ? true : false"
-          />
-        </div>
-      </ul>
--->
     </div>
 
-    <ul class="DiscardPile">
-      <ul class="Hand" v-for="(pile, index) in store.discardPile" v-bind:key="index">
-        <Tile
-          v-for="tile in pile"
-          :key="tile.id"
-          :tile="tile"
-          :show="true"
-        />
-      </ul>
-    </ul>
+    <div class="DiscardPile">
+      <Discard
+        v-for="(pile, index) in store.discardPile"
+        :key="index"
+        :tiles="store.discardPile[index]"
+        :position="positions[index]"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Tile from "./Tile";
 import Hand from "./Hand";
+import Discard from "./Discard";
 export default {
   //props: ['hands', 'melds', 'discardPile', 'gameId', 'playerNum']
   computed: {
@@ -66,9 +48,9 @@ export default {
       let s = this.$root.$data;
       return s.melds.splice(s.playerNum, 1);
     },
-    positions: () => ['left', 'top', 'right']
+    positions: () => ['bottom','left', 'top', 'right']
   },
-  components: { Tile, Hand }
+  components: { Tile, Hand, Discard }
 };
 </script>
 
@@ -79,5 +61,15 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.DiscardPile{
+  max-width: 174px;
+  width: 28vw;
+  height: 28vw;
+  max-height: 174px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

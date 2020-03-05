@@ -40,4 +40,9 @@ body{
   height: 100%;
   background-color: #1c7448;
 }
+
+ul{
+  padding: 0;
+  margin: 0;
+}
 </style>
