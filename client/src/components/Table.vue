@@ -2,33 +2,32 @@
   <div class="Table">
     <div class="PlayerHands">
       <Hand
-        :hand="store.hands[store.playerNum]"
-        :melds="store.melds[store.playerNum]"
-        isPlayerHand="true"
-        position="bottom"
-      />
-      <Hand
-        v-for="(hand,index) in opponentHands"
+        v-for="(hand,index) in store.hands"
         :key="index"
-        :hand="opponentHands[index]"
-        :melds="opponentMelds[index]"
-        :position="positions[index+1]"
+        :hand="store.hands[getHandPosition(
+          store.playerNum, index
+        )]"
+        :melds="store.melds[getHandPosition(
+          store.playerNum, index
+        )]"
+        :position="positions[index]"
+        :isPlayerHand="index==0"
       />
-      <!-- TODO: figure out corresponding positions -->
     </div>
-
     <div class="DiscardPile">
       <Discard
-        v-for="(pile, index) in store.hands"
+        v-for="(pile, index) in store.discards"
         :key="index"
-        :tiles="store.hands[index]"
+        :tiles="store.discards[getHandPosition(
+          store.playerNum, index
+        )]"
         :position="positions[index]"
       />
     </div>
-
     <Windicator
       :wind="store.curWind"
-      :dealer="getDealerPosition(store.dealerNum, store.playerNum)" />
+      :dealer="getDealerPosition(store.playerNum,store.dealerNum)"
+    />
   </div>
 </template>
 
@@ -55,8 +54,11 @@ export default {
     positions: () => ["bottom", "right", "top", "left"]
   },
   methods: {
-    getDealerPosition: function(d, p) {
+    getDealerPosition: function(p, d){
       return (((p-d) % 4) + 4) % 4;
+    },
+    getHandPosition: function(p, i){
+      return (((p+i) % 4) + 4) % 4;
     }
   },
   components: { Tile, Hand, Discard, Windicator }

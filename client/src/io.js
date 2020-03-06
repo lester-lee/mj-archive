@@ -16,7 +16,7 @@ export default function attachListeners(socket, store) {
   });
 
   socket.on('update discard', pile => {
-    store.discardPile = pile;
+    store.discards = pile;
   });
 
   socket.on('update turn', curPlayer => {

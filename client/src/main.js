@@ -13,9 +13,9 @@ const socket = io('http://localhost:4000');
 let store = {
   gameId: 'asdf',
   username: 'username',
-  hands: [],
-  melds: [],
-  discardPile: [],
+  hands: [[],[],[],[]],
+  melds: [[],[],[],[]],
+  discards: [[],[],[],[]],
   playerNum: 2,
   myTurn: false,
   curWind: 0,
