@@ -20,7 +20,7 @@ function createGame(id) {
     wall: wall,
     hands: hands,
     melds: melds,
-    discardPile: [[], [], [], []],
+    discards: [[], [], [], []],
   }
 }
 
@@ -81,7 +81,7 @@ function findFlowers(hands, wall) {
 
 function handleDiscard(game, playerNum, discard) {
   remove(game.hands[playerNum], (t) => t.id === discard.id);
-  game.discardPile[playerNum].push(discard);
+  game.discards[playerNum].push(discard);
 }
 
 function progressGame(game) {
