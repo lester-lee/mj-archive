@@ -18,6 +18,8 @@ let store = {
   discardPile: [],
   playerNum: 0,
   myTurn: false,
+  curWind: 0,
+  dealerNum: 0,
   socket: socket,
 };
 

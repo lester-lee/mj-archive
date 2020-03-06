@@ -25,6 +25,12 @@
         :position="positions[index]"
       />
     </div>
+
+    <Windicator
+      :wind="store.curWind"
+      :dealer="store.dealerNum"
+    />
+
   </div>
 </template>
 

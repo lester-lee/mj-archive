@@ -13,6 +13,7 @@ export default {
 <style lang="scss">
 
 #app {
+  @include center-in-parent;
   font-family: $font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

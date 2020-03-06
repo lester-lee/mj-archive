@@ -10,11 +10,13 @@ function createGame(id) {
   id = id || uuidv4();
   let wall = createWall();
   let hands = createHands(wall);
-  let melds = findFlowers(hands, wall); 
+  let melds = findFlowers(hands, wall);
 
   return {
     id: id,
     curPlayer: 0,
+    curWind: 0,
+    dealerNum: 0,
     wall: wall,
     hands: hands,
     melds: melds,
@@ -100,6 +102,10 @@ function progressGame(game) {
 
   hand.sort(T.compareTiles);
   meld.sort(T.compareTiles);
+}
+
+function progressWind(game){
+  game.curWind = (game.curWind + 1) % 4;
 }
 
 function canGong(hand, tile) {
