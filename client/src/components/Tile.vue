@@ -1,7 +1,7 @@
 <template>
   <li
-    :class="['Tile', canHover ? 'canHover' : '']"
-    @click="show ? onTileClick(tile, store) : () => {}"
+    :class="['Tile', canHover && store.myTurn ? 'canHover' : '']"
+    @click="store.myTurn ? onTileClick(tile, store) : () => {}"
   >
     <img v-if="show" :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
     <img v-else :src="tile.downUrl" alt="Facedown tile"/>

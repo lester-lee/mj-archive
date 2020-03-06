@@ -1,5 +1,6 @@
 <template>
   <div class="Table">
+    <Debug>
     <div class="PlayerHands">
       <Hand
         v-for="(hand,index) in store.hands"
