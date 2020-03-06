@@ -1,6 +1,6 @@
 <template>
   <div class="Table">
-    <Debug>
+    <Debug />
     <div class="PlayerHands">
       <Hand
         v-for="(hand,index) in store.hands"
@@ -33,10 +33,11 @@
 </template>
 
 <script>
-import Tile from "./Tile";
-import Hand from "./Hand";
-import Discard from "./Discard";
-import Windicator from "./Windicator";
+import Tile from './Tile';
+import Hand from './Hand';
+import Discard from './Discard';
+import Windicator from './Windicator';
+import Debug from './Debug';
 export default {
   computed: {
     store: function() {
@@ -62,7 +63,7 @@ export default {
       return (((p+i) % 4) + 4) % 4;
     }
   },
-  components: { Tile, Hand, Discard, Windicator }
+  components: { Debug, Tile, Hand, Discard, Windicator }
 };
 </script>
 
