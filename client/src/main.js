@@ -16,10 +16,10 @@ let store = {
   hands: [],
   melds: [],
   discardPile: [],
-  playerNum: 0,
+  playerNum: 2,
   myTurn: false,
   curWind: 0,
-  dealerNum: 0,
+  dealerNum: 1,
   socket: socket,
 };
 

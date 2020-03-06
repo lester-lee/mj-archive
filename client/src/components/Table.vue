@@ -28,9 +28,7 @@
 
     <Windicator
       :wind="store.curWind"
-      :dealer="store.dealerNum"
-    />
-
+      :dealer="getDealerPosition(store.dealerNum, store.playerNum)" />
   </div>
 </template>
 
@@ -38,33 +36,39 @@
 import Tile from "./Tile";
 import Hand from "./Hand";
 import Discard from "./Discard";
+import Windicator from "./Windicator";
 export default {
-  //props: ['hands', 'melds', 'discardPile', 'gameId', 'playerNum']
   computed: {
     store: function() {
       return this.$root.$data;
     },
     opponentHands: function() {
       let s = this.$root.$data;
-      let hL = s.hands.slice(0,s.playerNum);
-      let hR = s.hands.slice(s.playerNum+1);
+      let hL = s.hands.slice(0, s.playerNum);
+      let hR = s.hands.slice(s.playerNum + 1);
       return hL.concat(hR);
     },
     opponentMelds: function() {
       let s = this.$root.$data;
       return s.melds.splice(s.playerNum, 1);
     },
-    positions: () => ['bottom','left', 'top', 'right']
+    positions: () => ["bottom", "right", "top", "left"]
   },
-  components: { Tile, Hand, Discard }
+  methods: {
+    getDealerPosition: function(d, p) {
+      return (((p-d) % 4) + 4) % 4;
+    }
+  },
+  components: { Tile, Hand, Discard, Windicator }
 };
 </script>
 
 <style lang="scss">
-.Table, .PlayerHands{
+.Table,
+.PlayerHands {
   @include fill-parent;
 }
-.DiscardPile{
+.DiscardPile {
   @include center-in-parent;
   width: $d-width;
   max-width: $d-max-width;

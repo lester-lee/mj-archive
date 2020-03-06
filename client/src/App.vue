@@ -23,7 +23,6 @@ export default {
   min-width: $table-width;
   height: $table-width;
   border: 1px solid red;
-  position: relative;
 }
 
 html {
@@ -34,7 +33,7 @@ html {
 }
 body{
   margin: 0;
-  height: 100%;
+  height: 100vh;
   background-color: #1c7448;
 }
 
