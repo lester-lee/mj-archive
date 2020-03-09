@@ -10,19 +10,19 @@
       </div>
       <div class="DebugField">
         <label for="playerNum">PlayerNum</label>
-        <input type="text" id="playerNum" v-model="store.playerNum" />
+        <input type="number" id="playerNum" v-model="store.playerNum" />
       </div>
       <div class="DebugField">
         <label for="myTurn">My Turn</label>
-        <input type="text" id="myTurn" v-model="store.myTurn" />
+        <input type="checkbox" id="myTurn" v-model="store.myTurn" />
       </div>
       <div class="DebugField">
         <label for="curWind">Wind</label>
-        <input type="text" id="curWind" v-model="store.curWind" />
+        <input type="number" id="curWind" v-model="store.curWind" />
       </div>
       <div class="DebugField">
         <label for="dealerNum">Dealer</label>
-        <input type="text" id="dealerNum" v-model="store.dealerNum" />
+        <input type="number" id="dealerNum" v-model="store.dealerNum" />
       </div>
   </div>
 </template>

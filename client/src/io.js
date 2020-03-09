@@ -20,7 +20,7 @@ export default function attachListeners(socket, store) {
   });
 
   socket.on('update turn', curPlayer => {
-    store.myTurn = store.playerNum === curPlayer;
+    store.myTurn = store.playerNum == curPlayer;
   });
 
 }

@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import attachListeners from './io';
 
 Vue.config.productionTip = false;
+Vue.prototype.log = console.log;
 
 // Socket connections
 const socket = io('http://localhost:4000');
@@ -16,10 +17,10 @@ let store = {
   hands: [[],[],[],[]],
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
-  playerNum: 2,
+  playerNum: 0,
   myTurn: false,
   curWind: 0,
-  dealerNum: 1,
+  dealerNum: 0,
   socket: socket,
 };
 
