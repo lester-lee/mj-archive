@@ -14,6 +14,7 @@ function createGame(id) {
 
   return {
     id: id,
+    players: [],
     curPlayer: 0,
     curWind: 0,
     dealerNum: 0,
@@ -21,6 +22,11 @@ function createGame(id) {
     hands: hands,
     melds: melds,
     discards: [[], [], [], []],
+    addPlayer: function(username) {
+      if (!this.players.includes(username)){
+        this.players.push(username);
+      }
+    }
   }
 }
 

@@ -1,4 +1,9 @@
 export default function attachListeners(socket, store) {
+  // Login & Lobby
+  socket.on('lobby update', lobbyInfo => {
+    store.lobby = lobbyInfo;
+  });
+
   socket.on('start game', game => {
     store.gameId = game.id;
     socket.emit('update tiles', {

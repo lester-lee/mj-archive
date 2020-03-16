@@ -9,7 +9,10 @@
         <label for="gameId">Game ID</label>
         <input type="text" id="gameId" v-model="store.gameId" />
       </div>
-      <button type="submit" @click.stop.prevent="goToTable()">Play!</button>
+      <button type="submit" @click.stop.prevent="login()">Login</button>
+      <div class="LoginField" v-if="store.lobby.numPlayers > 0">Waiting for {{ 4 - store.lobby.numPlayers }} more people...
+      </div>
+      <button v-if="store.lobby.readyToStart" type="submit" @click.stop.prevent="goToTable()">Play!</button>
     </form>
   </div>
 </template>
@@ -26,14 +29,23 @@ export default {
     }
   },
   methods: {
-    goToTable: function() {
+    login: function() {
       let store = this.$root.$data;
       if(store.username){
-        store.socket.emit("join game", store.gameId);
-        this.$router.push("/table");
+        store.socket.emit('login', {
+          username: store.username,
+          gameId: store.gameId
+        });
       }else{
         this.usernameError = true;
       }
+    },
+    goToTable: function(){
+      store.socket.emit('join game', {
+          username: store.username,
+          gameId: store.gameId
+        });
+      this.$router.push('/table');
     }
   }
 };
@@ -44,6 +56,7 @@ export default {
   width: 200px;
   height: 200px;
   margin: 20vh auto;
+  color: $text-color;
   &Field {
     display: flex;
     flex-flow: column;

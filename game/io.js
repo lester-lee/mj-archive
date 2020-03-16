@@ -9,14 +9,27 @@ function attachListeners(io, games) {
       console.log('user disconnected')
     });
 
-    socket.on('join game', id => {
+    // Login & Lobby
+    socket.on('login', loginInfo => {
       let game;
+      let id = loginInfo.gameId;
       if (!id || !(id in games)) {
         game = G.createGame(id);
+        game.addPlayer(loginInfo.username);
         games[game.id] = game;
-      }else{
+      } else {
         game = games[id];
+        game.addPlayer(loginInfo.username);
       }
+      io.emit('lobby update', {
+        readyToStart: game.players.length == 4,
+        numPlayers: game.players.length
+      });
+    });
+
+
+    socket.on('join game', id => {
+      
       io.emit('start game', game);
       io.emit('update turn', game.curPlayer);
     })
