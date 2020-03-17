@@ -1,19 +1,34 @@
 <template>
-  <div class="Login">
-    <form>
-      <div class="LoginField">
-        <label for="username">Username</label>
-        <input :class="usernameError ? 'LoginError' : ''" type="text" id="username" v-model="store.username" required />
-      </div>
-      <div class="LoginField">
-        <label for="gameId">Game ID</label>
-        <input type="text" id="gameId" v-model="store.gameId" />
-      </div>
-      <button type="submit" @click.stop.prevent="login()">Login</button>
-      <div class="LoginField" v-if="store.lobby.numPlayers > 0">Waiting for {{ 4 - store.lobby.numPlayers }} more people...
-      </div>
+  <div>
+    <div class="Login" v-if="store.lobby.numPlayers == 0">
+      <form>
+        <div class="LoginField">
+          <label for="username">Username</label>
+          <input
+            :class="usernameError ? 'LoginError' : ''"
+            type="text"
+            id="username"
+            v-model="store.username"
+            required
+          />
+        </div>
+        <div class="LoginField">
+          <label for="gameId">Game ID</label>
+          <input type="text" id="gameId" v-model="store.gameId" />
+        </div>
+        <button v-if="!store.lobby.readyToStart" type="submit" @click.stop.prevent="login()">Login</button>
+      </form>
+    </div>
+    <div class="Login" v-if="store.lobby.numPlayers > 0">
+      <div
+        class="LoginField"
+        v-if="store.lobby.numPlayers > 0 && store.lobby.numPlayers < 4"
+      >Waiting for {{ 4 - store.lobby.numPlayers }} more people...</div>
+      <ul>
+        <li v-for="(player, index) in store.lobby.players" :key="index">{{player}}</li>
+      </ul>
       <button v-if="store.lobby.readyToStart" type="submit" @click.stop.prevent="goToTable()">Play!</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -31,21 +46,19 @@ export default {
   methods: {
     login: function() {
       let store = this.$root.$data;
-      if(store.username){
-        store.socket.emit('login', {
+      if (store.username) {
+        store.socket.emit("login", {
           username: store.username,
           gameId: store.gameId
         });
-      }else{
+      } else {
         this.usernameError = true;
       }
     },
-    goToTable: function(){
-      store.socket.emit('join game', {
-          username: store.username,
-          gameId: store.gameId
-        });
-      this.$router.push('/table');
+    goToTable: function() {
+      let store = this.$root.$data;
+      store.socket.emit("join game", store.gameId);
+      this.$router.push("/table");
     }
   }
 };

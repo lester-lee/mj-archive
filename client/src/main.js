@@ -17,6 +17,7 @@ let store = {
   lobby: {
     readyToStart: false,
     numPlayers: 0,
+    players: [],
   },
   hands: [[],[],[],[]],
   melds: [[],[],[],[]],

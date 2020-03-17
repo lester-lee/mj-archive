@@ -23,13 +23,14 @@ function attachListeners(io, games) {
       }
       io.emit('lobby update', {
         readyToStart: game.players.length == 4,
+        players: game.players,
         numPlayers: game.players.length
       });
     });
 
 
     socket.on('join game', id => {
-      
+      let game = games[id];
       io.emit('start game', game);
       io.emit('update turn', game.curPlayer);
     })
