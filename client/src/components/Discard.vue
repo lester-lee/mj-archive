@@ -5,6 +5,8 @@
       :key="tile.id"
       :tile="tile"
       :show="true"
+      :canClick="false"
+      :canHover="false"
     />
   </ul>
 </template>

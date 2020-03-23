@@ -1,16 +1,16 @@
 <template>
   <li
     :class="['Tile', canHover && store.myTurn ? 'canHover' : '']"
-    @click="store.myTurn ? onTileClick(tile, store) : () => {}"
+    @click="canClick && store.myTurn ? onTileClick(tile, store) : () => {}"
   >
-    <img v-if="show" :src="tile.url" :alt="tile.suit + ':' + tile.rank"/>
+    <img v-if="show" :src="tile.url" :alt="getSuit(tile.suit) + ':' + tile.rank"/>
     <img v-else :src="tile.downUrl" alt="Facedown tile"/>
   </li>
 </template>
 
 <script>
 export default {
-  props: ['tile', 'canHover', 'show'],
+  props: ['tile', 'canHover', 'show', 'canClick'],
   methods: {
     onTileClick: (tile, store) => {
       if (tile.suit >= 5){ // 5 is FLOWER
@@ -21,6 +21,24 @@ export default {
         playerNum: store.playerNum,
         discard: tile,
       });
+    },
+    getSuit: suit => {
+      switch(suit){
+        case 0:
+          return 'bamboo';
+        case 1:
+          return 'man';
+        case 2:
+          return 'pin';
+        case 3:
+          return 'wind';
+        case 4:
+          return 'dragon';
+        case 5:
+          return 'flower';
+        case 6:
+          return 'season';
+      }
     }
   },
   computed: {

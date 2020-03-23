@@ -15,6 +15,7 @@
         :tile="tile"
         :canHover="isPlayerHand"
         :show="isPlayerHand"
+        :canClick="isPlayerHand"
       />
     </ul>
   </div>
