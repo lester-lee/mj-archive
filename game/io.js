@@ -35,8 +35,15 @@ function attachListeners(io, games) {
       io.emit('update turn', game.curPlayer);
     })
 
-    socket.on('update tiles', info => {
-      let g = games[info.gameId];
+    socket.on('update playerNum', info => {
+      let game = games[info.gameId];
+      io.emit('update playerNum', game.getPlayerNum(info.username));
+    });
+
+
+    // Game Information updates
+    socket.on('update tiles', gameId => {
+      let g = games[gameId];
       io.emit('update hand', g.hands);
       io.emit('update melds', g.melds);
       io.emit('update discards', g.discards);

@@ -26,6 +26,9 @@ function createGame(id) {
       if (!this.players.includes(username)){
         this.players.push(username);
       }
+    },
+    getPlayerNum: function(username) {
+      return this.players.indexOf(username);
     }
   }
 }

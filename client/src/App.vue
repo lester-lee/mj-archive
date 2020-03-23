@@ -19,8 +19,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin: auto;
-  width: 50%;
-  min-width: $table-width;
+  width: $table-width;
   height: $table-width;
   border: 1px solid red;
 }
