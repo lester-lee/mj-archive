@@ -24,6 +24,10 @@
         <label for="dealerNum">Dealer</label>
         <input type="number" id="dealerNum" v-model="store.dealerNum" />
       </div>
+      <div class="DebugField">
+        <label for="dealerNum">ShownHands</label>
+        <input type="text" id="shownHands" v-model="store.shownHands" />
+      </div>
   </div>
 </template>
 

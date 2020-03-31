@@ -20,6 +20,7 @@ let store = {
     players: [],
   },
   hands: [[],[],[],[]],
+  shownHands: [0,0,0,0],
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
   playerNum: 0,

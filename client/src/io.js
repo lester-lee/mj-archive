@@ -35,4 +35,8 @@ export default function attachListeners(socket, store) {
     store.myTurn = store.playerNum == curPlayer;
   });
 
+  socket.on('update shownHands', shownHands => {
+    store.shownHands = shownHands;
+  });
+
 }

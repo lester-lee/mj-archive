@@ -20,6 +20,7 @@ function createGame(id) {
     dealerNum: 0,
     wall: wall,
     hands: hands,
+    shownHands: [0, 0, 0, 0],
     melds: melds,
     discards: [[], [], [], []],
     lastDiscard: null,

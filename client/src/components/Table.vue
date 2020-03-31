@@ -13,6 +13,9 @@
         )]"
         :position="positions[index-1]"
         :isPlayerHand="index-1==0"
+        :isShowing="store.shownHands[getHandPosition(
+          store.playerNum, index-1
+        )] > 0"
       />
     </div>
     <div class="DiscardPile">
@@ -29,6 +32,7 @@
       :wind="store.curWind"
       :dealer="getDealerPosition(store.playerNum,store.dealerNum)"
     />
+    <ActionMenu />
   </div>
 </template>
 
@@ -38,6 +42,7 @@ import Hand from './Hand';
 import Discard from './Discard';
 import Windicator from './Windicator';
 import Debug from './Debug';
+import ActionMenu from './ActionMenu';
 
 export default {
   computed: {
@@ -58,7 +63,7 @@ export default {
       return (((i+p) % 4) + 4) % 4;
     }
   },
-  components: { Debug, Tile, Hand, Discard, Windicator }
+  components: { Debug, Tile, Hand, Discard, Windicator, ActionMenu }
 };
 </script>
 

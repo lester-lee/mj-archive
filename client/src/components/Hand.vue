@@ -14,7 +14,7 @@
         :key="tile.id"
         :tile="tile"
         :canHover="isPlayerHand"
-        :show="isPlayerHand"
+        :show="isShowing || isPlayerHand"
         :canClick="isPlayerHand"
       />
     </ul>
@@ -24,7 +24,7 @@
 <script>
 import Tile from './Tile';
 export default {
-  props: ['hand', 'melds', 'isPlayerHand', 'position'],
+  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing'],
   components: {Tile}
 };
 </script>

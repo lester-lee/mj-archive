@@ -62,6 +62,13 @@ function attachListeners(io, games) {
       io.emit('update discards', g.discards);
       io.emit('update turn', g.curPlayer);
     })
+
+    // Player Actions
+    socket.on('show hand', info => {
+      let g = games[info.gameId];
+      g.shownHands[info.playerNum] = 1;
+      socket.emit('update shownHands', g.shownHands);
+    });
   });
 }
 
