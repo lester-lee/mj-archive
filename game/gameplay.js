@@ -22,6 +22,7 @@ function createGame(id) {
     hands: hands,
     melds: melds,
     discards: [[], [], [], []],
+    lastDiscard: null,
     addPlayer: function(username) {
       if (!this.players.includes(username)){
         this.players.push(username);
@@ -91,6 +92,7 @@ function findFlowers(hands, wall) {
 function handleDiscard(game, playerNum, discard) {
   remove(game.hands[playerNum], (t) => t.id === discard.id);
   game.discards[playerNum].push(discard);
+  game.lastDiscard = discard;
 }
 
 function progressGame(game) {
