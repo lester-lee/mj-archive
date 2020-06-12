@@ -8,12 +8,13 @@ Vue.config.productionTip = false;
 Vue.prototype.log = console.log;
 
 // Socket connections
-const socket = io('http://localhost:4000');
+const socket = io('http://192.168.0.108:4000');
 
 // Game state
 let store = {
   gameId: 'asdf',
   username: 'username',
+  inLobby: false,
   lobby: {
     readyToStart: false,
     numPlayers: 0,

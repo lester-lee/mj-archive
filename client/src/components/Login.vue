@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="Login" v-if="store.lobby.numPlayers == 0">
+    <div class="Login" v-if="!store.inLobby">
       <form>
         <div class="LoginField">
           <label for="username">Username</label>
@@ -19,11 +19,11 @@
         <button v-if="!store.lobby.readyToStart" type="submit" @click.stop.prevent="login()">Login</button>
       </form>
     </div>
-    <div class="Login" v-if="store.lobby.numPlayers > 0">
+    <div class="Login" v-if="store.inLobby">
       <div
         class="LoginField"
         v-if="store.lobby.numPlayers > 0 && store.lobby.numPlayers < 4"
-      >Waiting for {{ 4 - store.lobby.numPlayers }} more people...</div>
+      >Waiting for {{ 4 - store.lobby.numPlayers }} more...</div>
       <ul>
         <li v-for="(player, index) in store.lobby.players" :key="index">{{player}}</li>
       </ul>
@@ -47,6 +47,7 @@ export default {
     login: function() {
       let store = this.$root.$data;
       if (store.username) {
+        store.inLobby = true;
         store.socket.emit("login", {
           username: store.username,
           gameId: store.gameId

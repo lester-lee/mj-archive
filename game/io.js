@@ -3,24 +3,28 @@ const G = require('./gameplay');
 function attachListeners(io, games) {
 
   io.on('connection', socket => {
-    console.log('user connected');
+    console.log('user connected', socket.id);
 
     socket.on('disconnect', () => {
-      console.log('user disconnected')
+      console.log('user disconnected', socket.id)
     });
 
-    // Login & Lobby
+    /** Login & Lobby */
+
     socket.on('login', loginInfo => {
       let game;
       let id = loginInfo.gameId;
+
+      // Try to find game; create if not found
       if (!id || !(id in games)) {
         game = G.createGame(id);
-        game.addPlayer(loginInfo.username);
         games[game.id] = game;
       } else {
         game = games[id];
-        game.addPlayer(loginInfo.username);
       }
+
+      game.addPlayer(loginInfo.username);
+
       io.emit('lobby update', {
         readyToStart: game.players.length == 4,
         players: game.players,
@@ -30,14 +34,14 @@ function attachListeners(io, games) {
 
 
     socket.on('join game', id => {
-      let game = games[id];
-      io.emit('start game', game);
-      io.emit('update turn', game.curPlayer);
+      let g = games[id];
+      io.emit('start game', g);
     })
 
     socket.on('update playerNum', info => {
-      let game = games[info.gameId];
-      io.emit('update playerNum', game.getPlayerNum(info.username));
+      let g = games[info.gameId];
+      socket.emit('update playerNum', g.getPlayerNum(info.username));
+      io.emit('update turn', g.curPlayer);
     });
 
 
@@ -67,7 +71,7 @@ function attachListeners(io, games) {
     socket.on('show hand', info => {
       let g = games[info.gameId];
       g.shownHands[info.playerNum] = 1;
-      socket.emit('update shownHands', g.shownHands);
+      io.emit('update shownHands', g.shownHands);
     });
   });
 }
