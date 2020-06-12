@@ -1,4 +1,5 @@
 const G = require('./gameplay');
+const DEBUG = true;
 
 function attachListeners(io, games) {
 
@@ -36,6 +37,9 @@ function attachListeners(io, games) {
     socket.on('join game', id => {
       let g = games[id];
       io.emit('start game', g);
+      if (DEBUG){
+        io.emit('update shownHands', [1,1,1,1]);
+      }
     })
 
     socket.on('update playerNum', info => {
@@ -59,14 +63,10 @@ function attachListeners(io, games) {
     })
 
     socket.on('discard tile', info => {
-      //console.log(info);
       let g = games[info.gameId];
       G.handleDiscard(g, info.playerNum, info.discard);
-      io.emit('update hand', g.hands);
-      io.emit('update discards', g.discards)
-
-      // Should emit twice?
       G.progressGame(g);
+
       io.emit('update hand', g.hands);
       io.emit('update discards', g.discards);
       io.emit('update turn', {

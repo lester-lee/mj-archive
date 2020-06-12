@@ -139,11 +139,20 @@ function checkMoves(game) {
   const curHand = game.hands[playerNum];
   game.chowPlayer = canChow(curHand, game.lastDiscard) ? playerNum : -1;
 
+
+  // Reset
+  game.pongPlayer = -1;
+  game.gongPlayer = -1;
+
   // Check pong & gong
   for (let p = 0; p < 4; p++){
     let hand = game.hands[p];
-    game.pongPlayer = canPong(hand, game.lastDiscard) ? p : -1;
-    game.gongPlayer = canPong(hand, game.lastDiscard, gong = true) ? p : -1;
+    if(canPong(hand, game.lastDiscard)){
+      game.pongPlayer = p;
+    }
+    if(canPong(hand, game.lastDiscard, gong=true)){
+      game.gongPlayer = p;
+    }
   }
 }
 
@@ -157,7 +166,7 @@ function canPong(hand, tile, gong = false) {
     }
   }
   console.log(compare, numFound, numFound == compare);
-  return numFound == compare;
+  return numFound >= compare;
 }
 
 // Use bitmap to see if tile fits within chow in hand
