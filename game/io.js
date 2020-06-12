@@ -57,7 +57,7 @@ function attachListeners(io, games) {
     // Game Information updates
     socket.on('update tiles', gameId => {
       let g = games[gameId];
-      io.emit('update hand', g.hands);
+      io.emit('update hands', g.hands);
       io.emit('update melds', g.melds);
       io.emit('update discards', g.discards);
     })
@@ -65,9 +65,9 @@ function attachListeners(io, games) {
     socket.on('discard tile', info => {
       let g = games[info.gameId];
       G.handleDiscard(g, info.playerNum, info.discard);
-      G.progressGame(g);
+      G.progressPlayer(g);
 
-      io.emit('update hand', g.hands);
+      io.emit('update hands', g.hands);
       io.emit('update discards', g.discards);
       io.emit('update turn', {
         curPlayer: g.curPlayer,
@@ -78,6 +78,13 @@ function attachListeners(io, games) {
     })
 
     // Player Actions
+    socket.on('draw', info => {
+      let g = games[info.gameId];
+      G.handleDraw(g);
+
+      io.emit('update hands', g.hands);
+    });
+
     socket.on('show hand', info => {
       let g = games[info.gameId];
       g.shownHands[info.playerNum] = 1;

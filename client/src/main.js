@@ -35,6 +35,7 @@ let store = {
   // Player info
   playerNum: 0,
   myTurn: false,
+  canDiscard: false,
   canChow: false,
   canPong: false,
   canGong: false,

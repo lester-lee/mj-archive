@@ -23,15 +23,19 @@
       <input type="checkbox" id="myTurn" v-model="store.myTurn" />
     </div>
     <div class="DebugField">
-      <label for="myTurn">canChow</label>
+      <label for="canDiscard">canDiscard</label>
+      <input type="checkbox" id="canDiscard" v-model="store.canDiscard" />
+    </div>
+    <div class="DebugField">
+      <label for="canChow">canChow</label>
       <input type="checkbox" id="canChow" v-model="store.canChow" />
     </div>
     <div class="DebugField">
-      <label for="myTurn">canPong</label>
+      <label for="canPong">canPong</label>
       <input type="checkbox" id="canPong" v-model="store.canPong" />
     </div>
     <div class="DebugField">
-      <label for="myTurn">canGong</label>
+      <label for="canGog">canGong</label>
       <input type="checkbox" id="canGong" v-model="store.canGong" />
     </div>
     <div class="DebugField">

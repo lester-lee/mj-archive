@@ -100,6 +100,17 @@ function findFlowers(hands, wall) {
 }
 
 /* Game Turn */
+function progressPlayer(game) {
+  // Increment player num
+  const playerNum = (game.curPlayer + 1) % 4;
+  game.curPlayer = playerNum;
+
+  checkMoves(game);
+}
+
+function progressWind(game) {
+  game.curWind = (game.curWind + 1) % 4;
+}
 
 function handleDiscard(game, playerNum, discard) {
   remove(game.hands[playerNum], (t) => t.id === discard.id);
@@ -107,19 +118,12 @@ function handleDiscard(game, playerNum, discard) {
   game.lastDiscard = discard;
 }
 
-function progressWind(game) {
-  game.curWind = (game.curWind + 1) % 4;
-}
-
-function progressGame(game) {
-  // Increment player num
-  const playerNum = (game.curPlayer + 1) % 4;
-  game.curPlayer = playerNum;
-
+function handleDraw(game){
+  const playerNum = game.curPlayer;
   const hand = game.hands[playerNum];
   const meld = game.melds[playerNum];
 
-  // Handle draw (flowers)
+  // Keep adding flowers to melds if drawn
   let draw = game.wall.pop();
   while (draw.suit >= T.FLOWER) {
     meld.push(draw);
@@ -129,8 +133,6 @@ function progressGame(game) {
 
   hand.sort(T.compareTiles);
   meld.sort(T.compareTiles);
-
-  checkMoves(game);
 }
 
 function checkMoves(game) {
@@ -186,5 +188,6 @@ function canChow(hand, tile) {
 module.exports = {
   createGame,
   handleDiscard,
-  progressGame
+  progressPlayer,
+  handleDraw,
 }

@@ -16,10 +16,14 @@ export default function attachListeners(socket, store) {
 
   socket.on('update playerNum', p => {
     store.playerNum = p;
+    // Handle first player discard
+    if (p == 0){
+      store.canDiscard = true;
+    }
   });
 
   // Game Information updates
-  socket.on('update hand', hands => {
+  socket.on('update hands', hands => {
     store.hands = hands;
   });
 

@@ -12,6 +12,11 @@
     <div class="ActionMenuButton" @click="showHand(store)">
       Show Hand
     </div>
+    <div  class="ActionMenuButton --big"
+          v-if="store.myTurn && !store.canDiscard"
+          @click="draw(store)">
+      Draw
+    </div>
   </div>
 </template>
 
@@ -23,6 +28,13 @@ export default {
         gameId: store.gameId,
         playerNum: store.playerNum
       });
+    },
+    draw: store => {
+      store.canDiscard = true;
+      store.socket.emit('draw', {
+        gameId: store.gameId,
+        playerNum: store.playerNum
+      })
     }
   },
   computed: {
@@ -57,6 +69,10 @@ $action-width: 130px;
     }
     &:active{
       background: rgb(187, 245, 255);
+    }
+
+    &.--big{
+      height: 50px;
     }
   }
 }
