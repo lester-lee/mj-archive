@@ -14,21 +14,30 @@ const socket = io('http://192.168.0.108:4000');
 let store = {
   gameId: 'asdf',
   username: 'username',
+  socket: socket,
+
+  // Lobby
   inLobby: false,
   lobby: {
     readyToStart: false,
     numPlayers: 0,
     players: [],
   },
+
+  // Game state
   hands: [[],[],[],[]],
   shownHands: [0,0,0,0],
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
+  dealerNum: 0,
+  curWind: 0,
+
+  // Player info
   playerNum: 0,
   myTurn: false,
-  curWind: 0,
-  dealerNum: 0,
-  socket: socket,
+  canChow: false,
+  canPong: false,
+  canGong: false,
 };
 
 attachListeners(socket, store);

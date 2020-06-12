@@ -14,22 +14,33 @@ function createGame(id) {
 
   return {
     id: id,
-    players: [],
-    curPlayer: 0,
-    curWind: 0,
-    dealerNum: 0,
+
+    // Tiles
     wall: wall,
     hands: hands,
-    shownHands: [0, 0, 0, 0],
     melds: melds,
     discards: [[], [], [], []],
     lastDiscard: null,
-    addPlayer: function(username) {
-      if (!this.players.includes(username)){
+
+    // Seating
+    curWind: 0,
+    dealerNum: 0,
+
+    // Players
+    players: [],
+    curPlayer: 0,
+    shownHands: [0, 0, 0, 0],
+    chowPlayer: -1,
+    pongPlayer: -1,
+    gongPlayer: -1,
+
+    // Methods
+    addPlayer: function (username) {
+      if (!this.players.includes(username)) {
         this.players.push(username);
       }
     },
-    getPlayerNum: function(username) {
+    getPlayerNum: function (username) {
       return this.players.indexOf(username);
     }
   }
@@ -96,6 +107,10 @@ function handleDiscard(game, playerNum, discard) {
   game.lastDiscard = discard;
 }
 
+function progressWind(game) {
+  game.curWind = (game.curWind + 1) % 4;
+}
+
 function progressGame(game) {
   // Increment player num
   const playerNum = (game.curPlayer + 1) % 4;
@@ -114,46 +129,49 @@ function progressGame(game) {
 
   hand.sort(T.compareTiles);
   meld.sort(T.compareTiles);
+
+  checkMoves(game);
 }
 
-function progressWind(game){
-  game.curWind = (game.curWind + 1) % 4;
+function checkMoves(game) {
+  // Check chow
+  const playerNum = game.curPlayer;
+  const curHand = game.hands[playerNum];
+  game.chowPlayer = canChow(curHand, game.lastDiscard) ? playerNum : -1;
+
+  // Check pong & gong
+  for (let p = 0; p < 4; p++){
+    let hand = game.hands[p];
+    game.pongPlayer = canPong(hand, game.lastDiscard) ? p : -1;
+    game.gongPlayer = canPong(hand, game.lastDiscard, gong = true) ? p : -1;
+  }
 }
 
-function canGong(hand, tile) {
+// Try to find 2 (or 3) of the tile within hand
+function canPong(hand, tile, gong = false) {
+  const compare = gong ? 3 : 2;
   let numFound = 0;
-  // Replcae with lodash (maybe?)
   for (let t of hand) {
     if (T.equals(t, tile)) {
       numFound++;
     }
   }
-  return numFound == 3;
+  console.log(compare, numFound, numFound == compare);
+  return numFound == compare;
 }
 
-function canPong(hand, tile) {
-  // TODO: m0erge with canGong possibly
-  let numFound = 0;
-  // Replace with lodash (maybe?)
-  for (let t of hand) {
-    if (T.equals(t, tile)) {
-      numFound++;
-    }
-  }
-  return numFound == 2;
-}
-
+// Use bitmap to see if tile fits within chow in hand
 function canChow(hand, tile) {
   // TODO: easier way of doing bitmap?
-  let check = [0,0,0,0,0,0,0,0,0,0]
+  let check = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   check[tile.rank] = 1;
-  for (let t of hand){
-    if (t.suit == tile.suit && Math.abs(tile.rank - t.rank) <= 2){
+  for (let t of hand) {
+    if (t.suit == tile.suit && Math.abs(tile.rank - t.rank) <= 2) {
       check[t.rank] = 1;
     }
   }
   let bitmap = check.join("");
-  return bitmap.indexOf("111");
+  return bitmap.indexOf("111") > 0;
 }
 
 module.exports = {

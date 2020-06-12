@@ -1,13 +1,13 @@
 <template>
   <div class="ActionMenu">
-    <div class="ActionMenuButton">
+    <div class="ActionMenuButton" v-if="store.canChow">
       Chow
     </div>
-    <div class="ActionMenuButton">
+    <div class="ActionMenuButton" v-if="store.canPong">
       Pong
     </div>
-    <div class="ActionMenuButton">
-      Kong
+    <div class="ActionMenuButton" v-if="store.canGong">
+      Gong
     </div>
     <div class="ActionMenuButton" @click="showHand(store)">
       Show Hand

@@ -41,7 +41,12 @@ function attachListeners(io, games) {
     socket.on('update playerNum', info => {
       let g = games[info.gameId];
       socket.emit('update playerNum', g.getPlayerNum(info.username));
-      io.emit('update turn', g.curPlayer);
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: g.chowPlayer,
+        pongPlayer: g.pongPlayer,
+        gongPlayer: g.gongPlayer,
+      });
     });
 
 
@@ -64,7 +69,12 @@ function attachListeners(io, games) {
       G.progressGame(g);
       io.emit('update hand', g.hands);
       io.emit('update discards', g.discards);
-      io.emit('update turn', g.curPlayer);
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: g.chowPlayer,
+        pongPlayer: g.pongPlayer,
+        gongPlayer: g.gongPlayer,
+      });
     })
 
     // Player Actions
