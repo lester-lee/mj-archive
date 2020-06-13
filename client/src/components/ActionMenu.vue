@@ -1,23 +1,17 @@
 <template>
   <div class="ActionMenu">
-    <div class="ActionMenuButton" v-if="store.canChow">
-      上
-    </div>
+    <div class="ActionMenuButton" v-if="store.canChow"
+      @click="act(store, '上')">上</div>
     <div class="ActionMenuButton" v-if="store.canPong"
-        @click="pong(store)">
-      碰
-    </div>
-    <div class="ActionMenuButton" v-if="store.canGong">
-      杠
-    </div>
-    <div class="ActionMenuButton" @click="showHand(store)">
-      Show Hand
-    </div>
-    <div class="ActionMenuButton --big"
+      @click="act(store, '碰')">碰</div>
+    <div class="ActionMenuButton" v-if="store.canGong"
+      @click="act(store, '杠')">杠</div>
+    <div class="ActionMenuButton" @click="showHand(store)">Show Hand</div>
+    <div
+      class="ActionMenuButton --big"
       v-if="store.myTurn && !store.canDiscard"
-      @click="draw(store)">
-      Draw
-    </div>
+      @click="act(store, 'draw')"
+    >Draw</div>
   </div>
 </template>
 
@@ -25,44 +19,36 @@
 export default {
   methods: {
     showHand: store => {
-      store.socket.emit('show hand', {
+      store.socket.emit("show hand", {
         gameId: store.gameId,
         playerNum: store.playerNum
       });
     },
-    draw: store => {
+    act: (store, action) => {
       store.canDiscard = true;
-      store.socket.emit('draw', {
-        gameId: store.gameId,
-        playerNum: store.playerNum
-      });
-    },
-    pong: store => {
-      store.canDiscard = true;
-      store.socket.emit('碰', {
+      store.socket.emit(action, {
         gameId: store.gameId,
         playerNum: store.playerNum
       });
     }
   },
   computed: {
-    store: function(){
+    store: function() {
       return this.$root.$data;
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
 $action-width: 130px;
 
-.ActionMenu{
-
+.ActionMenu {
   position: absolute;
   bottom: 0;
   right: -$action-width;
 
-  &Button{
+  &Button {
     text-align: center;
     width: 100px;
     height: 25px;
@@ -72,14 +58,14 @@ $action-width: 130px;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-    &:hover{
+    &:hover {
       background: #ccc;
     }
-    &:active{
+    &:active {
       background: rgb(187, 245, 255);
     }
 
-    &.--big{
+    &.--big {
       height: 50px;
     }
   }

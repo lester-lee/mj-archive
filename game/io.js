@@ -37,8 +37,8 @@ function attachListeners(io, games) {
     socket.on('join game', id => {
       let g = games[id];
       io.emit('start game', g);
-      if (DEBUG){
-        io.emit('update shownHands', [1,1,1,1]);
+      if (DEBUG) {
+        io.emit('update shownHands', [1, 1, 1, 1]);
       }
     });
 
@@ -104,9 +104,28 @@ function attachListeners(io, games) {
       })
     });
 
+    socket.on('杠', info => {
+      if (DEBUG) {
+        console.log('gong', info.playerNum);
+      }
+
+      let g = games[info.gameId];
+      G.handleGong(g, info.playerNum);
+
+      io.emit('update hands', g.hands);
+      io.emit('update melds', g.melds);
+      io.emit('update discards', g.discards);
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: -1,
+        pongPlayer: -1,
+        gongPlayer: -1,
+      })
+    });
+
 
     socket.on('show hand', info => {
-      if(DEBUG){
+      if (DEBUG) {
         console.log('show hand', info.playerNum);
       }
 

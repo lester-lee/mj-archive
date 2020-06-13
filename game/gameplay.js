@@ -142,13 +142,46 @@ function handlePong(game, p){
 
   game.curPlayer = p;
 
-  // Find pong tiles from player's hand
-  let tiles = remove(game.hands[p], (t) => T.equals(t, discard));
+  // Find tiles from hand
+  let tiles;
+  let hand = game.hands[p];
+
+  // Make sure only 2 tiles are removed
+  tiles = [];
+  let numFound = 0;
+  for (let i = 0; i < hand.length; i++){
+    if (T.equals(hand[i], discard) && numFound < 2){
+      numFound++;
+      tiles.push(hand[i]);
+      hand[i].suit = -1; // mark for deletion
+    }
+  }
+  remove(hand, (t) => t.suit == -1);
 
   // Add tiles to melds
   let melds = game.melds[p];
   melds.push(discard);
   game.melds[p] = melds.concat(tiles);
+}
+
+function handleGong(game, p){
+  let prevPlayerNum = ((game.curPlayer - 1 % 4) + 4) % 4;
+  let discard = game.discards[prevPlayerNum].pop();
+
+  game.curPlayer = p;
+
+  // Find tiles from hand
+  let tiles;
+  let hand = game.hands[p];
+  tiles = remove(hand, (t) => T.equals(t, discard));
+
+  // Add tiles to melds
+  let melds = game.melds[p];
+  melds.push(discard);
+  game.melds[p] = melds.concat(tiles);
+
+  // Draw from wall
+  handleDraw(game);
 }
 
 /**
@@ -222,4 +255,5 @@ module.exports = {
   handleDiscard,
   handleDraw,
   handlePong,
+  handleGong,
 }
