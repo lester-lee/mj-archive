@@ -1,20 +1,21 @@
 <template>
   <div class="ActionMenu">
     <div class="ActionMenuButton" v-if="store.canChow">
-      Chow
+      上
     </div>
-    <div class="ActionMenuButton" v-if="store.canPong">
-      Pong
+    <div class="ActionMenuButton" v-if="store.canPong"
+        @click="pong(store)">
+      碰
     </div>
     <div class="ActionMenuButton" v-if="store.canGong">
-      Gong
+      杠
     </div>
     <div class="ActionMenuButton" @click="showHand(store)">
       Show Hand
     </div>
-    <div  class="ActionMenuButton --big"
-          v-if="store.myTurn && !store.canDiscard"
-          @click="draw(store)">
+    <div class="ActionMenuButton --big"
+      v-if="store.myTurn && !store.canDiscard"
+      @click="draw(store)">
       Draw
     </div>
   </div>
@@ -34,7 +35,14 @@ export default {
       store.socket.emit('draw', {
         gameId: store.gameId,
         playerNum: store.playerNum
-      })
+      });
+    },
+    pong: store => {
+      store.canDiscard = true;
+      store.socket.emit('碰', {
+        gameId: store.gameId,
+        playerNum: store.playerNum
+      });
     }
   },
   computed: {

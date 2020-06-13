@@ -5,6 +5,7 @@ const uuidv4 = require('uuid/v4');
 const remove = require('lodash/remove');
 const shuffle = require('lodash/shuffle');
 
+
 function createGame(id) {
   // game model?
   id = id || uuidv4();
@@ -105,7 +106,7 @@ function progressPlayer(game) {
   const playerNum = (game.curPlayer + 1) % 4;
   game.curPlayer = playerNum;
 
-  checkMoves(game);
+  checkMelds(game);
 }
 
 function progressWind(game) {
@@ -135,7 +136,25 @@ function handleDraw(game){
   meld.sort(T.compareTiles);
 }
 
-function checkMoves(game) {
+function handlePong(game, p){
+  let prevPlayerNum = ((game.curPlayer - 1 % 4) + 4) % 4;
+  let discard = game.discards[prevPlayerNum].pop();
+
+  game.curPlayer = p;
+
+  // Find pong tiles from player's hand
+  let tiles = remove(game.hands[p], (t) => T.equals(t, discard));
+
+  // Add tiles to melds
+  let melds = game.melds[p];
+  melds.push(discard);
+  game.melds[p] = melds.concat(tiles);
+}
+
+/**
+ * Check to see if any user needs to be prompted for melds
+ */
+function checkMelds(game) {
   // Check chow
   const playerNum = game.curPlayer;
   const curHand = game.hands[playerNum];
@@ -167,7 +186,6 @@ function canPong(hand, tile, gong = false) {
       numFound++;
     }
   }
-  console.log(compare, numFound, numFound == compare);
   return numFound >= compare;
 }
 
@@ -185,9 +203,23 @@ function canChow(hand, tile) {
   return bitmap.indexOf("111") > 0;
 }
 
+function findPongs(hand){
+  /*returns [
+    [p1, p2],...
+    [p1]...
+  ]*/
+}
+
+function findChows(hand){
+  /**
+   * returns [[c1, c2], [c1..], [c1...]]
+   */
+}
+
 module.exports = {
   createGame,
-  handleDiscard,
   progressPlayer,
+  handleDiscard,
   handleDraw,
+  handlePong,
 }

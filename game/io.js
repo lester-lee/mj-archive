@@ -40,7 +40,7 @@ function attachListeners(io, games) {
       if (DEBUG){
         io.emit('update shownHands', [1,1,1,1]);
       }
-    })
+    });
 
     socket.on('update playerNum', info => {
       let g = games[info.gameId];
@@ -60,7 +60,7 @@ function attachListeners(io, games) {
       io.emit('update hands', g.hands);
       io.emit('update melds', g.melds);
       io.emit('update discards', g.discards);
-    })
+    });
 
     socket.on('discard tile', info => {
       let g = games[info.gameId];
@@ -75,7 +75,7 @@ function attachListeners(io, games) {
         pongPlayer: g.pongPlayer,
         gongPlayer: g.gongPlayer,
       });
-    })
+    });
 
     // Player Actions
     socket.on('draw', info => {
@@ -85,7 +85,31 @@ function attachListeners(io, games) {
       io.emit('update hands', g.hands);
     });
 
+    socket.on('碰', info => {
+      if (DEBUG) {
+        console.log('pong', info.playerNum);
+      }
+
+      let g = games[info.gameId];
+      G.handlePong(g, info.playerNum);
+
+      io.emit('update hands', g.hands);
+      io.emit('update melds', g.melds);
+      io.emit('update discards', g.discards);
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: -1,
+        pongPlayer: -1,
+        gongPlayer: -1,
+      })
+    });
+
+
     socket.on('show hand', info => {
+      if(DEBUG){
+        console.log('show hand', info.playerNum);
+      }
+
       let g = games[info.gameId];
       g.shownHands[info.playerNum] = 1;
       io.emit('update shownHands', g.shownHands);

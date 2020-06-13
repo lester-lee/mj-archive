@@ -49,7 +49,7 @@ export default {
     store: function() {
       return this.$root.$data;
     },
-    positions: () => ["bottom", "right", "top", "left"]
+    positions: () => ['bottom', 'right', 'top', 'left']
   },
   methods: {
     getDealerPosition: function(p, d){
