@@ -16,10 +16,6 @@ export default function attachListeners(socket, store) {
 
   socket.on('update playerNum', p => {
     store.playerNum = p;
-    // Handle first player discard
-    if (p == 0){
-      store.canDiscard = true;
-    }
   });
 
   // Game Information updates
@@ -31,8 +27,9 @@ export default function attachListeners(socket, store) {
     store.melds = melds;
   });
 
-  socket.on('update discards', discards => {
-    store.discards = discards;
+  socket.on('update discards', info => {
+    store.discards = info.discards;
+    store.lastDiscard = info.lastDiscard;
   });
 
   socket.on('update turn', turnInfo => {
@@ -46,4 +43,10 @@ export default function attachListeners(socket, store) {
     store.shownHands = shownHands;
   });
 
+  // Player Prompts
+  socket.on('prompt pong', info => {
+    store.prompt = store.playerNum == info.pongPlayer;
+    store.canPong = store.playerNum == info.pongPlayer;
+    store.canGong = store.playerNum == info.gongPlayer;
+  });
 }

@@ -29,13 +29,14 @@ let store = {
   shownHands: [0,0,0,0],
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
+  lastDiscard: {},
   dealerNum: 0,
   curWind: 0,
 
   // Player info
   playerNum: 0,
+  prompt: false,
   myTurn: false,
-  canDiscard: false,
   canChow: false,
   canPong: false,
   canGong: false,

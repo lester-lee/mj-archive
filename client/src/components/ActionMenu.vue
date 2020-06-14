@@ -7,11 +7,6 @@
     <div class="ActionMenuButton" v-if="store.canGong"
       @click="act(store, '杠')">杠</div>
     <div class="ActionMenuButton" @click="showHand(store)">Show Hand</div>
-    <div
-      class="ActionMenuButton --big"
-      v-if="store.myTurn && !store.canDiscard"
-      @click="act(store, 'draw')"
-    >Draw</div>
   </div>
 </template>
 
@@ -25,7 +20,6 @@ export default {
       });
     },
     act: (store, action) => {
-      store.canDiscard = true;
       store.socket.emit(action, {
         gameId: store.gameId,
         playerNum: store.playerNum

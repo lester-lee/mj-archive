@@ -5,7 +5,6 @@ const uuidv4 = require('uuid/v4');
 const remove = require('lodash/remove');
 const shuffle = require('lodash/shuffle');
 
-
 function createGame(id) {
   // game model?
   id = id || uuidv4();
@@ -34,6 +33,9 @@ function createGame(id) {
     chowPlayer: -1,
     pongPlayer: -1,
     gongPlayer: -1,
+
+    // Turn Management
+    claimAccepted: false,
 
     // Methods
     addPlayer: function (username) {
@@ -105,14 +107,13 @@ function progressPlayer(game) {
   // Increment player num
   const playerNum = (game.curPlayer + 1) % 4;
   game.curPlayer = playerNum;
-
-  checkMelds(game);
 }
 
 function progressWind(game) {
   game.curWind = (game.curWind + 1) % 4;
 }
 
+// Move discard from hand to discard pile
 function handleDiscard(game, playerNum, discard) {
   remove(game.hands[playerNum], (t) => t.id === discard.id);
   game.discards[playerNum].push(discard);
@@ -136,9 +137,13 @@ function handleDraw(game){
   meld.sort(T.compareTiles);
 }
 
+function handleChow(game, p, c){
+  let discard = game.discards;
+}
+
+// p: num of player who pong
 function handlePong(game, p){
-  let prevPlayerNum = ((game.curPlayer - 1 % 4) + 4) % 4;
-  let discard = game.discards[prevPlayerNum].pop();
+  let discard = game.discards[game.curPlayer].pop();
 
   game.curPlayer = p;
 
@@ -189,69 +194,73 @@ function handleGong(game, p){
  */
 function checkMelds(game) {
   // Check chow
-  const playerNum = game.curPlayer;
-  const curHand = game.hands[playerNum];
-  game.chowPlayer = canChow(curHand, game.lastDiscard) ? playerNum : -1;
+  const nextPlayerNum = (game.curPlayer + 1) % 4;
+  const nextHand = game.hands[nextPlayerNum];
 
+  console.log(nextPlayerNum);
+
+  // findChows returns [-1, -1, -1] if no chow exists
+  let chows = findChows(nextHand, game.lastDiscard);
+  let chowExists = chows.reduce((x,y) => x + y, 0) > -3;
+  game.chowPlayer = chowExists ? nextPlayerNum : -1;
 
   // Reset
   game.pongPlayer = -1;
   game.gongPlayer = -1;
 
   // Check pong & gong
+  let pongExists = false;
   for (let p = 0; p < 4; p++){
     let hand = game.hands[p];
-    if(canPong(hand, game.lastDiscard)){
+    let count = countTile(hand, game.lastDiscard);
+    if (count == 2){  // found pong
       game.pongPlayer = p;
+      pongExists = true;
     }
-    if(canPong(hand, game.lastDiscard, gong=true)){
+    if (count == 3){ // found gong
       game.gongPlayer = p;
     }
   }
+
+  return {chows, chowExists, pongExists};
 }
 
-// Try to find 2 (or 3) of the tile within hand
-function canPong(hand, tile, gong = false) {
-  const compare = gong ? 3 : 2;
+// Used mainly for finding pong / gong
+function countTile(hand, tile) {
   let numFound = 0;
   for (let t of hand) {
     if (T.equals(t, tile)) {
       numFound++;
     }
   }
-  return numFound >= compare;
+  return numFound;
 }
 
 // Use bitmap to see if tile fits within chow in hand
-function canChow(hand, tile) {
-  // TODO: easier way of doing bitmap?
-  let check = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  check[tile.rank] = 1;
+function findChows(hand, tile) {
+  // Cannot chow winds or dragons
+  if (tile.suit >= T.WIND){
+    return [-1, -1, -1];
+  }
+  // Index+1 corresponds to rank
+  let check = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
   for (let t of hand) {
     if (t.suit == tile.suit && Math.abs(tile.rank - t.rank) <= 2) {
       check[t.rank] = 1;
     }
   }
+  check[tile.rank] = 2;
+
   let bitmap = check.join("");
-  return bitmap.indexOf("111") > 0;
-}
 
-function findPongs(hand){
-  /*returns [
-    [p1, p2],...
-    [p1]...
-  ]*/
-}
-
-function findChows(hand){
-  /**
-   * returns [[c1, c2], [c1..], [c1...]]
-   */
+  return [bitmap.indexOf("211"), bitmap.indexOf("121"), bitmap.indexOf("112")];
 }
 
 module.exports = {
   createGame,
   progressPlayer,
+  checkMelds,
   handleDiscard,
   handleDraw,
   handlePong,

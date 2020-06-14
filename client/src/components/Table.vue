@@ -33,6 +33,7 @@
       :dealer="getDealerPosition(store.playerNum,store.dealerNum)"
     />
     <ActionMenu />
+    <Prompt />
   </div>
 </template>
 
@@ -43,6 +44,7 @@ import Discard from './Discard';
 import Windicator from './Windicator';
 import Debug from './Debug';
 import ActionMenu from './ActionMenu';
+import Prompt from './Prompt';
 
 export default {
   computed: {
@@ -63,7 +65,7 @@ export default {
       return (((i+p) % 4) + 4) % 4;
     }
   },
-  components: { Debug, Tile, Hand, Discard, Windicator, ActionMenu }
+  components: { Debug, Tile, Hand, Discard, Windicator, ActionMenu, Prompt }
 };
 </script>
 

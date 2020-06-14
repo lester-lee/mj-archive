@@ -59,22 +59,58 @@ function attachListeners(io, games) {
       let g = games[gameId];
       io.emit('update hands', g.hands);
       io.emit('update melds', g.melds);
-      io.emit('update discards', g.discards);
+      io.emit('update discards', {
+        discards: g.discards,
+        lastDiscard: g.lastDiscard,
+      });
     });
 
     socket.on('discard tile', info => {
       let g = games[info.gameId];
       G.handleDiscard(g, info.playerNum, info.discard);
-      G.progressPlayer(g);
-
-      io.emit('update hands', g.hands);
-      io.emit('update discards', g.discards);
-      io.emit('update turn', {
-        curPlayer: g.curPlayer,
-        chowPlayer: g.chowPlayer,
-        pongPlayer: g.pongPlayer,
-        gongPlayer: g.gongPlayer,
+      io.emit('update discards', {
+        discards: g.discards,
+        lastDiscard: g.lastDiscard,
       });
+      io.emit('update hands', g.hands);
+      io.emit('update melds', g.melds);
+
+      // See if other players can do anything with discard
+      let meldInfo = G.checkMelds(g);
+
+      // Prepare pong / gong prompts
+      if(meldInfo.pongExists){
+        io.emit('prompt pong', {
+          pongPlayer: g.pongPlayer,
+          gongPlayer: g.gongPlayer,
+        });
+      }
+
+      // Prepare chow prompt
+      if (meldInfo.chowExists){
+        io.emit('prompt chow', {
+          chowPlayer: g.chowPlayer,
+          chows: meldInfo.chows,
+        });
+      }
+
+      if(DEBUG){
+        console.log(meldInfo);
+      }
+
+      // Go to next turn if no prompts
+      // Otherwise prompts will handle turn progression
+      if (!meldInfo.pongExists && !meldInfo.chowExists){
+        G.progressPlayer(g);
+        G.handleDraw(g);
+        io.emit('update hands', g.hands);
+        io.emit('update turn', {
+          curPlayer: g.curPlayer,
+          chowPlayer: -1,
+          pongPlayer: -1,
+          gongPlayer: -1,
+        });
+      }
     });
 
     // Player Actions
@@ -85,6 +121,41 @@ function attachListeners(io, games) {
       io.emit('update hands', g.hands);
     });
 
+    socket.on('show hand', info => {
+      if (DEBUG) {
+        console.log('show hand', info.playerNum);
+      }
+
+      let g = games[info.gameId];
+      g.shownHands[info.playerNum] = 1;
+      io.emit('update shownHands', g.shownHands);
+    });
+
+    updateAfterAction = function(g){
+      io.emit('update hands', g.hands);
+      io.emit('update melds', g.melds);
+      io.emit('update discards', {
+        discards: g.discards,
+        lastDiscard: g.lastDiscard,
+      });
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: -1,
+        pongPlayer: -1,
+        gongPlayer: -1,
+      });
+    }
+
+    socket.on('上', info => {
+      if (DEBUG) {
+        console.log('pong, info.playerNum');
+      }
+      let g = games[info.gameId];
+      G.handleChow(g, info.playerNum, info.chowType);
+
+      updateAfterAction(g);
+    });
+
     socket.on('碰', info => {
       if (DEBUG) {
         console.log('pong', info.playerNum);
@@ -93,15 +164,7 @@ function attachListeners(io, games) {
       let g = games[info.gameId];
       G.handlePong(g, info.playerNum);
 
-      io.emit('update hands', g.hands);
-      io.emit('update melds', g.melds);
-      io.emit('update discards', g.discards);
-      io.emit('update turn', {
-        curPlayer: g.curPlayer,
-        chowPlayer: -1,
-        pongPlayer: -1,
-        gongPlayer: -1,
-      })
+      updateAfterAction(g);
     });
 
     socket.on('杠', info => {
@@ -112,26 +175,7 @@ function attachListeners(io, games) {
       let g = games[info.gameId];
       G.handleGong(g, info.playerNum);
 
-      io.emit('update hands', g.hands);
-      io.emit('update melds', g.melds);
-      io.emit('update discards', g.discards);
-      io.emit('update turn', {
-        curPlayer: g.curPlayer,
-        chowPlayer: -1,
-        pongPlayer: -1,
-        gongPlayer: -1,
-      })
-    });
-
-
-    socket.on('show hand', info => {
-      if (DEBUG) {
-        console.log('show hand', info.playerNum);
-      }
-
-      let g = games[info.gameId];
-      g.shownHands[info.playerNum] = 1;
-      io.emit('update shownHands', g.shownHands);
+      updateAfterAction(g);
     });
   });
 }

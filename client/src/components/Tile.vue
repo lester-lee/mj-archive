@@ -1,7 +1,7 @@
 <template>
   <li
     :class="['Tile', canHover && store.myTurn ? 'canHover' : '']"
-    @click="canClick && store.canDiscard && store.myTurn ?
+    @click="canClick && store.myTurn ?
             onTileClick(tile, store) : () => {}"
   >
     <img v-if="show" :src="tile.url" :alt="getSuit(tile.suit) + ':' + tile.rank"/>
@@ -17,7 +17,7 @@ export default {
       if (tile.suit >= 5){ // 5 is FLOWER
         return;
       }
-      store.canDiscard = false;
+      store.myTurn = false;
       store.socket.emit('discard tile', {
         gameId: store.gameId,
         playerNum: store.playerNum,
