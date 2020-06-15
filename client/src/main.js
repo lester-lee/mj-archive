@@ -39,6 +39,7 @@ let store = {
   myTurn: false,
   canChow: false,
   chowTiles: [[], [], []],
+  waitPong: false,
   canPong: false,
   canGong: false,
 };

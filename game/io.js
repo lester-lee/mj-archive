@@ -80,6 +80,7 @@ function attachListeners(io, games) {
 
       // Send pong / gong prompt
       if(meldInfo.pongExists){
+        g.waitPong = true;
         io.emit('prompt pong', {
           pongPlayer: g.pongPlayer,
           gongPlayer: g.gongPlayer,
@@ -101,30 +102,25 @@ function attachListeners(io, games) {
       // Go to next turn if no prompts
       // Otherwise prompts will handle turn progression
       if (!meldInfo.pongExists && !meldInfo.chowExists){
-        G.progressPlayer(g);
-        G.handleDraw(g);
-        io.emit('update hands', g.hands);
-        io.emit('update turn', {
-          curPlayer: g.curPlayer,
-          chowPlayer: -1,
-          pongPlayer: -1,
-          gongPlayer: -1,
-        });
+        goToNextPlayer(g);
       }
     });
 
     /** Player Actions */
-    socket.on('show hand', info => {
-      if (DEBUG) {
-        console.log('show hand', info.playerNum);
-      }
+    // Helper Functions
+    goToNextPlayer = function (g) {
+      G.progressPlayer(g);
+      G.handleDraw(g);
+      io.emit('update hands', g.hands);
+      io.emit('update turn', {
+        curPlayer: g.curPlayer,
+        chowPlayer: -1,
+        pongPlayer: -1,
+        gongPlayer: -1,
+      });
+    }
 
-      let g = games[info.gameId];
-      g.shownHands[info.playerNum] = 1;
-      io.emit('update shownHands', g.shownHands);
-    });
-
-    updateAfterAction = function(g){
+    updateAfterAction = function (g) {
       io.emit('update hands', g.hands);
       io.emit('update melds', g.melds);
       io.emit('update discards', {
@@ -139,11 +135,47 @@ function attachListeners(io, games) {
       });
     }
 
+    socket.on('show hand', info => {
+      if (DEBUG) {
+        console.log('show hand', info.playerNum);
+      }
+
+      let g = games[info.gameId];
+      g.shownHands[info.playerNum] = 1;
+      io.emit('update shownHands', g.shownHands);
+    });
+
+    socket.on('prompt close', info => {
+      //Close pong/gong
+      let g = games[info.gameId];
+      if(info.playerNum == g.pongPlayer || info.playerNum == g.gongPlayer){
+        g.waitPong = false;
+
+        if(g.chowPlayer == -1){ // No chow to wait for => progress game
+         goToNextPlayer(g);
+        }
+      }
+
+      //Close chow
+      if(info.playerNum == g.chowPlayer){
+        if(g.waitPong){
+          socket.emit('wait pong');
+          return;
+        } else {
+          goToNextPlayer(g);
+        }
+      }
+    });
+
     socket.on('上', info => {
       if (DEBUG) {
         console.log('chow', info.playerNum, info.options.chowType);
       }
       let g = games[info.gameId];
+      if (g.waitPong){
+        socket.emit('wait pong');
+        return; // TODO: better feedback for user
+      }
       G.handleChow(g, info.playerNum, info.options.chowType);
 
       updateAfterAction(g);

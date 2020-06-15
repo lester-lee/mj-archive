@@ -37,6 +37,8 @@ export default function attachListeners(socket, store) {
     store.canChow = store.playerNum == turnInfo.chowPlayer;
     store.canPong = store.playerNum == turnInfo.pongPlayer;
     store.canGong = store.playerNum == turnInfo.gongPlayer;
+    store.prompt = false;
+    store.waitPong = false;
   });
 
   socket.on('update shownHands', shownHands => {
@@ -51,8 +53,14 @@ export default function attachListeners(socket, store) {
   });
 
   socket.on('prompt chow', info => {
-    store.prompt = store.playerNum == info.chowPlayer;
+    // prompt may be up from pong
+    store.prompt = store.prompt || store.playerNum == info.chowPlayer;
     store.canChow = store.playerNum == info.chowPlayer;
     store.chowTiles = info.chowTiles;
-  })
+  });
+
+  socket.on('wait pong', () => {
+    store.waitPong = true;
+    store.prompt = true;
+  });
 }

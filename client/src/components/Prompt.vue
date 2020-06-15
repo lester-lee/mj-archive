@@ -5,7 +5,7 @@
       <Tile :tile="store.lastDiscard" :show="true" />
     </div>
     <ul class="PromptActions">
-
+      <div v-if="store.waitPong"> Wait! Someone may 碰.</div>
       <div class="ChowActions" v-if="store.canChow">
         上
         <li class="PromptAction" v-for="index in 3" :key="index"

@@ -1,11 +1,5 @@
 <template>
   <div class="ActionMenu">
-    <div class="ActionMenuButton" v-if="store.canChow"
-      @click="act(store, '上')">上</div>
-    <div class="ActionMenuButton" v-if="store.canPong"
-      @click="act(store, '碰')">碰</div>
-    <div class="ActionMenuButton" v-if="store.canGong"
-      @click="act(store, '杠')">杠</div>
     <div class="ActionMenuButton" @click="showHand(store)">Show Hand</div>
   </div>
 </template>
@@ -15,12 +9,6 @@ export default {
   methods: {
     showHand: store => {
       store.socket.emit("show hand", {
-        gameId: store.gameId,
-        playerNum: store.playerNum
-      });
-    },
-    act: (store, action) => {
-      store.socket.emit(action, {
         gameId: store.gameId,
         playerNum: store.playerNum
       });

@@ -35,7 +35,7 @@ function createGame(id) {
     gongPlayer: -1,
 
     // Turn Management
-    claimAccepted: false,
+    waitPong: false,
 
     // Methods
     addPlayer: function (username) {
@@ -179,6 +179,8 @@ function handleChow(game, p, c){
 
 // p: num of player who pong
 function handlePong(game, p){
+  game.waitPong = false;
+
   let discard = game.discards[game.curPlayer].pop();
 
   game.curPlayer = p;
@@ -200,6 +202,8 @@ function handlePong(game, p){
 }
 
 function handleGong(game, p){
+  game.waitPong = false;
+
   let discard = game.discards[prevPlayerNum].pop();
 
   game.curPlayer = p;
@@ -241,7 +245,7 @@ function checkMelds(game) {
   for (let p = 0; p < 4; p++){
     let hand = game.hands[p];
     let count = countTile(hand, game.lastDiscard);
-    if (count == 2){  // found pong
+    if (count == 2 && p != game.curPlayer){  // found pong from another player
       game.pongPlayer = p;
       pongExists = true;
     }

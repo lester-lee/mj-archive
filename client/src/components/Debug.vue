@@ -3,7 +3,6 @@
     <div class="DebugField">
       <label for="username">Username</label>
       <input
-        :class="usernameError ? 'LoginError' : ''"
         type="text"
         id="username"
         v-model="store.username"
