@@ -54,7 +54,7 @@ function attachListeners(io, games) {
     });
 
 
-    // Game Information updates
+    /** Game Information Updates */
     socket.on('update tiles', gameId => {
       let g = games[gameId];
       io.emit('update hands', g.hands);
@@ -78,7 +78,7 @@ function attachListeners(io, games) {
       // See if other players can do anything with discard
       let meldInfo = G.checkMelds(g);
 
-      // Prepare pong / gong prompts
+      // Send pong / gong prompt
       if(meldInfo.pongExists){
         io.emit('prompt pong', {
           pongPlayer: g.pongPlayer,
@@ -86,11 +86,11 @@ function attachListeners(io, games) {
         });
       }
 
-      // Prepare chow prompt
+      // Send chow prompt
       if (meldInfo.chowExists){
         io.emit('prompt chow', {
           chowPlayer: g.chowPlayer,
-          chows: meldInfo.chows,
+          chowTiles: meldInfo.chowTiles,
         });
       }
 
@@ -113,14 +113,7 @@ function attachListeners(io, games) {
       }
     });
 
-    // Player Actions
-    socket.on('draw', info => {
-      let g = games[info.gameId];
-      G.handleDraw(g);
-
-      io.emit('update hands', g.hands);
-    });
-
+    /** Player Actions */
     socket.on('show hand', info => {
       if (DEBUG) {
         console.log('show hand', info.playerNum);
@@ -148,10 +141,10 @@ function attachListeners(io, games) {
 
     socket.on('上', info => {
       if (DEBUG) {
-        console.log('pong, info.playerNum');
+        console.log('chow', info.playerNum, info.options.chowType);
       }
       let g = games[info.gameId];
-      G.handleChow(g, info.playerNum, info.chowType);
+      G.handleChow(g, info.playerNum, info.options.chowType);
 
       updateAfterAction(g);
     });

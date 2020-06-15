@@ -134,11 +134,47 @@ function handleDraw(game){
   hand.push(draw);
 
   hand.sort(T.compareTiles);
-  meld.sort(T.compareTiles);
 }
 
+// p: num of player who chow
+// c: type of chow; 1=100, 2=010, 3=001
 function handleChow(game, p, c){
-  let discard = game.discards;
+  removeOneTile = function(hand, suit, rank, tiles){
+    for(let i = 0; i < hand.length; i++){
+      let t = hand[i];
+      if (t.suit == suit && t.rank == rank){
+        tiles.push(t);
+        t.suit = -1;
+        return;
+      }
+    }
+  }
+
+  let discard = game.discards[game.curPlayer].pop();
+
+  game.curPlayer = p;
+
+  // Find tiles from hand according to c
+  let tiles = [];
+  let hand = game.hands[p];
+  switch(c){
+    case 1:
+      removeOneTile(hand, discard.suit, discard.rank + 1, tiles);
+      removeOneTile(hand, discard.suit, discard.rank + 2, tiles);
+      break;
+    case 2:
+      removeOneTile(hand, discard.suit, discard.rank - 1, tiles);
+      removeOneTile(hand, discard.suit, discard.rank + 1, tiles);
+      break;
+    case 3:
+      removeOneTile(hand, discard.suit, discard.rank - 2, tiles);
+      removeOneTile(hand, discard.suit, discard.rank - 1, tiles);
+      break;
+  }
+
+  remove(hand, (t) => t.suit == -1);
+
+  addToMelds(game, discard, p, tiles);
 }
 
 // p: num of player who pong
@@ -148,12 +184,9 @@ function handlePong(game, p){
   game.curPlayer = p;
 
   // Find tiles from hand
-  let tiles;
+  let tiles = [];
   let hand = game.hands[p];
-
-  // Make sure only 2 tiles are removed
-  tiles = [];
-  let numFound = 0;
+  let numFound = 0; // Make sure only 2 tiles are removed
   for (let i = 0; i < hand.length; i++){
     if (T.equals(hand[i], discard) && numFound < 2){
       numFound++;
@@ -163,14 +196,10 @@ function handlePong(game, p){
   }
   remove(hand, (t) => t.suit == -1);
 
-  // Add tiles to melds
-  let melds = game.melds[p];
-  melds.push(discard);
-  game.melds[p] = melds.concat(tiles);
+  addToMelds(game, discard, p, tiles);
 }
 
 function handleGong(game, p){
-  let prevPlayerNum = ((game.curPlayer - 1 % 4) + 4) % 4;
   let discard = game.discards[prevPlayerNum].pop();
 
   game.curPlayer = p;
@@ -181,12 +210,14 @@ function handleGong(game, p){
   tiles = remove(hand, (t) => T.equals(t, discard));
 
   // Add tiles to melds
-  let melds = game.melds[p];
-  melds.push(discard);
-  game.melds[p] = melds.concat(tiles);
+  addToMelds(game, discard, p, tiles);
+}
 
-  // Draw from wall
-  handleDraw(game);
+function addToMelds(game, discard, p, tiles){
+  let melds = game.melds[p];
+  tiles.push(discard);
+  tiles.sort(T.compareTiles);
+  game.melds[p] = melds.concat(tiles);
 }
 
 /**
@@ -197,11 +228,8 @@ function checkMelds(game) {
   const nextPlayerNum = (game.curPlayer + 1) % 4;
   const nextHand = game.hands[nextPlayerNum];
 
-  console.log(nextPlayerNum);
-
   // findChows returns [-1, -1, -1] if no chow exists
-  let chows = findChows(nextHand, game.lastDiscard);
-  let chowExists = chows.reduce((x,y) => x + y, 0) > -3;
+  let {chowExists, chowTiles} = findChows(nextHand, game.lastDiscard);
   game.chowPlayer = chowExists ? nextPlayerNum : -1;
 
   // Reset
@@ -222,7 +250,7 @@ function checkMelds(game) {
     }
   }
 
-  return {chows, chowExists, pongExists};
+  return {chowExists, chowTiles, pongExists};
 }
 
 // Used mainly for finding pong / gong
@@ -240,21 +268,56 @@ function countTile(hand, tile) {
 function findChows(hand, tile) {
   // Cannot chow winds or dragons
   if (tile.suit >= T.WIND){
-    return [-1, -1, -1];
+    return {chowExists: false, chowTiles: [[], [], []]};
   }
   // Index+1 corresponds to rank
-  let check = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let check = [8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
 
   for (let t of hand) {
     if (t.suit == tile.suit && Math.abs(tile.rank - t.rank) <= 2) {
-      check[t.rank] = 1;
+      check[t.rank] = 0;
     }
   }
-  check[tile.rank] = 2;
+  check[tile.rank] = 1;
 
   let bitmap = check.join("");
+  console.log(bitmap);
 
-  return [bitmap.indexOf("211"), bitmap.indexOf("121"), bitmap.indexOf("112")];
+  // Use bitmap to generate chow tiles
+  let chowExists = false;
+  let chowTiles = [[], [], []];
+
+  let type100 = bitmap.indexOf("100");
+  if (type100 > -1){
+    chowExists = true;
+    chowTiles[0] = [
+      tile,
+      new T.Tile(tile.suit, tile.rank+1, -1),
+      new T.Tile(tile.suit, tile.rank+2, -1)
+    ];
+  }
+
+  let type010 = bitmap.indexOf("010");
+  if (type010 > -1){
+    chowExists = true;
+    chowTiles[1] = [
+      new T.Tile(tile.suit, tile.rank-1, -1),
+      tile,
+      new T.Tile(tile.suit, tile.rank+1, -1)
+    ];
+  }
+
+  let type001 = bitmap.indexOf("001");
+  if (type001 > -1){
+    chowExists = true;
+    chowTiles[2] = [
+      new T.Tile(tile.suit, tile.rank-2, -1),
+      new T.Tile(tile.suit, tile.rank-1, -1),
+      tile
+    ];
+  }
+
+  return {chowExists, chowTiles};
 }
 
 module.exports = {
@@ -263,6 +326,7 @@ module.exports = {
   checkMelds,
   handleDiscard,
   handleDraw,
+  handleChow,
   handlePong,
   handleGong,
 }

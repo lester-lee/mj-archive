@@ -38,6 +38,7 @@ let store = {
   prompt: false,
   myTurn: false,
   canChow: false,
+  chowTiles: [[], [], []],
   canPong: false,
   canGong: false,
 };

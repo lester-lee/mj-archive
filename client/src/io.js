@@ -49,4 +49,10 @@ export default function attachListeners(socket, store) {
     store.canPong = store.playerNum == info.pongPlayer;
     store.canGong = store.playerNum == info.gongPlayer;
   });
+
+  socket.on('prompt chow', info => {
+    store.prompt = store.playerNum == info.chowPlayer;
+    store.canChow = store.playerNum == info.chowPlayer;
+    store.chowTiles = info.chowTiles;
+  })
 }

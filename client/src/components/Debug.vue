@@ -23,6 +23,10 @@
       <input type="checkbox" id="myTurn" v-model="store.myTurn" />
     </div>
     <div class="DebugField">
+      <label for="prompt">Prompt</label>
+      <input type="checkbox" id="prompt" v-model="store.prompt" />
+    </div>
+    <div class="DebugField">
       <label for="canChow">canChow</label>
       <input type="checkbox" id="canChow" v-model="store.canChow" />
     </div>
