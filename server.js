@@ -1,4 +1,8 @@
 const app = require('express')();
+
+const serveStatic = require('serve-static');
+app.use(serveStatic(__dirname + "/client/dist"));
+
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const attachListeners = require('./game/io');
@@ -6,8 +10,9 @@ const attachListeners = require('./game/io');
 let games = {};
 
 app.get('/', (req, res) => {
-  res.json(games);
+  //res.json(games);
 });
+
 
 attachListeners(io, games);
 
