@@ -3,6 +3,9 @@ const app = require('express')();
 const serveStatic = require('serve-static');
 app.use(serveStatic(__dirname + "/client/dist"));
 
+const cors = require('cors');
+app.use(cors());
+
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const attachListeners = require('./game/io');
@@ -20,4 +23,4 @@ const port = process.env.PORT || 4000;
 
 http.listen(port, () => {
   console.log(`listening on ${port}`);
-})
+});
