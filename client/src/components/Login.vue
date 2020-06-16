@@ -70,7 +70,7 @@ export default {
   width: 200px;
   height: 200px;
   margin: 20vh auto;
-  color: $text-color;
+  color: $background-color;
   &Field {
     display: flex;
     flex-flow: column;

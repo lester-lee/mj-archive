@@ -31,10 +31,8 @@ export default {
 
 <style lang="scss">
 .Hand {
-  border: 1px solid #bbb;
-  border-radius: 5px;
-
-  list-style-type: none;
+  //border: 1px solid #bbb;
+  //border-radius: 5px;
 
   width: $hand-width;
   height: $t-height;

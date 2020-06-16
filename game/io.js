@@ -1,5 +1,5 @@
 const G = require('./gameplay');
-const DEBUG = true;
+const DEBUG = false;
 
 function attachListeners(io, games) {
 

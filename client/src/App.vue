@@ -17,11 +17,10 @@ export default {
   font-family: $font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   margin: auto;
   width: $table-width;
   height: $table-width;
-  border: 1px solid red;
+  //border: 1px solid red;
 }
 
 html {
@@ -33,7 +32,7 @@ html {
 body{
   margin: 0;
   height: 100vh;
-  background-color: #1c7448;
+  background-color: $table-color;
 }
 
 ul{

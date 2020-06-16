@@ -28,27 +28,27 @@ $action-width: 130px;
 .ActionMenu {
   position: absolute;
   bottom: 0;
-  right: -$action-width;
+  left: -$action-width;
 
   &Button {
-    text-align: center;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+
     width: 100px;
-    height: 25px;
-    background: white;
-    color: #333;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    height: 45px;
+    border-radius: 20px;
+    
+    background: rgba(255, 255, 255, 0.1);
+    color: $background-color;
+
+
     cursor: pointer;
     &:hover {
-      background: #ccc;
+      background: rgba(255, 255, 255, 0.2);
     }
     &:active {
-      background: rgb(187, 245, 255);
-    }
-
-    &.--big {
-      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
     }
   }
 }

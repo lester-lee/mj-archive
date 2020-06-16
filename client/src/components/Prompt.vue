@@ -7,9 +7,9 @@
     <ul class="PromptActions">
       <div v-if="store.waitPong"> Wait! Someone may 碰.</div>
       <div class="ChowActions" v-if="store.canChow">
-        上
         <li class="PromptAction" v-for="index in 3" :key="index"
           @click="act(store, '上', {chowType: index})">
+          <span v-if="chowTiles(index-1).length > 0" style="width:35px">上</span>
           <Tile v-for="t in chowTiles(index-1)"
           :key="t.id" :tile="t" :show="true"/>
         </li>
@@ -52,36 +52,60 @@ $prompt-width: 400px;
 .Prompt {
   @include center-in-parent;
   width: $prompt-width;
-  height: $prompt-width;
-  background: white;
+  background: $table-color;
   text-align: center;
 
+  border-radius: 20px;
+  border: 10px solid $accent-color;
+  padding: 10px;
+
+  font-size: 1.5em;
+
   .DiscardDisplay{
-    margin: 30px 0;
+    margin: 20px 0;
   }
 
   &Close {
     position: absolute;
     top: 0;
     right: 0;
-  }
 
-  &Action, &Close {
-    text-align: center;
-    background: white;
-    color: #333;
-    margin: 5px;
-    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+
+    font-size: 2em;
+    color: rgb(214, 89, 72);
+
     cursor: pointer;
+
     &:hover {
-      background: #ccc;
+      color: rgb(173, 71, 53);
     }
     &:active {
-      background: rgb(187, 245, 255);
+      color: rgb(160, 36, 36);
     }
+  }
 
-    &.--big {
-      height: 50px;
+  &Action{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 50%;
+    margin: 10px auto;
+
+    border-radius: 20px;
+    line-height: $t-height + 5px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: $background-color;
+
+
+    cursor: pointer;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    &:active {
+      background: rgba(255, 255, 255, 0.3);
     }
   }
 }

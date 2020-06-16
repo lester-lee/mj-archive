@@ -2,11 +2,13 @@ $font: Avenir,
 Helvetica,
 Arial,
 sans-serif;
-$text-color: #eee;
+$background-color: rgb(255, 255, 255);
+$accent-color: rgb(250, 214, 13);
 
 // Table
 $table-width: 720px;
 $table-height: 80vh;
+$table-color: rgb(43, 121, 95);
 
 // Hand
 $hand-width: 90%;
