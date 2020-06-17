@@ -1,7 +1,7 @@
 const app = require('express')();
 
 const serveStatic = require('serve-static');
-app.use(serveStatic(__dirname + "/client/dist"));
+//app.use(serveStatic(__dirname + "/client/dist"));
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);

@@ -245,7 +245,7 @@ function checkMelds(game) {
   for (let p = 0; p < 4; p++){
     let hand = game.hands[p];
     let count = countTile(hand, game.lastDiscard);
-    if (count == 2 && p != game.curPlayer){  // found pong from another player
+    if (count >= 2 && p != game.curPlayer){  // found pong from another player
       game.pongPlayer = p;
       pongExists = true;
     }

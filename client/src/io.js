@@ -47,7 +47,7 @@ export default function attachListeners(socket, store) {
 
   // Player Prompts
   socket.on('prompt pong', info => {
-    store.prompt = store.playerNum == info.pongPlayer;
+    store.prompt = store.playerNum == info.pongPlayer || store.playerNum == info.gongPlayer;
     store.canPong = store.playerNum == info.pongPlayer;
     store.canGong = store.playerNum == info.gongPlayer;
   });
