@@ -6,12 +6,17 @@ export default function attachListeners(socket, store) {
   });
 
   socket.on('start game', game => {
+    store.gameStart = true;
     store.gameId = game.id;
     socket.emit('update playerNum', {
       gameId: game.id,
       username: store.username
     });
     socket.emit('update tiles', game.id);
+  });
+
+  socket.on('update confirm', confirmCheck => {
+    store.confirmCheck = confirmCheck;
   });
 
   socket.on('update playerNum', p => {

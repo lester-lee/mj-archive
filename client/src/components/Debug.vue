@@ -26,6 +26,10 @@
       <input type="checkbox" id="prompt" v-model="store.prompt" />
     </div>
     <div class="DebugField">
+      <label for="winPrompt">winPrompt</label>
+      <input type="checkbox" id="winPrompt" v-model="store.winPrompt" />
+    </div>
+    <div class="DebugField">
       <label for="canChow">canChow</label>
       <input type="checkbox" id="canChow" v-model="store.canChow" />
     </div>

@@ -25,9 +25,13 @@
         v-if="store.lobby.numPlayers > 0 && store.lobby.numPlayers < 4"
       >Waiting for {{ 4 - store.lobby.numPlayers }} more...</div>
       <ul>
-        <li v-for="(player, index) in store.lobby.players" :key="index">{{player}}</li>
+        <li v-for="(player, index) in store.lobby.players" :key="index"
+          :class="['PlayerName',
+            store.confirmCheck[index] > 0 ? '--active' : '']">
+          {{player}}
+        </li>
       </ul>
-      <button v-if="store.lobby.readyToStart" type="submit" @click.stop.prevent="goToTable()">Play!</button>
+      <button v-if="store.lobby.readyCheck" type="submit" @click.stop.prevent="sendReady()">Ready!</button>
     </div>
   </div>
 </template>
@@ -56,10 +60,24 @@ export default {
         this.usernameError = true;
       }
     },
-    goToTable: function() {
+    sendReady: function() {
       let store = this.$root.$data;
-      store.socket.emit("join game", store.gameId);
-      this.$router.push("/table");
+      let router = this.$router;
+      store.socket.emit("lobby ready", {
+        username: store.username,
+        gameId: store.gameId
+      });
+
+      // Keep checking if game start
+      let startCheckInterval;
+      let startCheck = function(){
+        if(store.gameStart){
+          router.push('/table');
+          clearInterval(startCheckInterval);
+          store.gameStart = false;
+        }
+      }
+      startCheckInterval = setInterval(startCheck, 500);
     }
   }
 };
@@ -80,6 +98,10 @@ export default {
   }
   &Error {
     border: 1px solid red;
+  }
+
+  .PlayerName.--active{
+    font-style: italic;
   }
 }
 </style>

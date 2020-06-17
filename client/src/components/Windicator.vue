@@ -14,27 +14,36 @@
 </template>
 
 <script>
+import Tile from './Tile';
 export default {
   props: ['wind', 'dealer'],
   computed: {
     winds: () => ['東', '南', '西', '北'],
     positions: () => ['bottom','right', 'top', 'left'],
-  }
+    store: function() {
+      return this.$root.$data;
+    }
+  },
+  components: {Tile}
 }
 </script>
 
 <style lang="scss">
-$w-text-size: 16px;
+$w-text-size: 20px;
 .Windicator{
-  @include center-in-parent;
-  width: $d-width;
-  max-width: $d-max-width;
-  height: $d-width;
-  max-height: $d-max-width;
+  width: $d-width / 2;
+  max-width: $d-max-width / 2;
+  height: $d-width / 2;
+  max-height: $d-max-width / 2;
+
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
 }
 .RoundWind{
   @include center-in-parent;
-  font-size: $w-text-size*5;
+  top: 49%;
+  font-size: $w-text-size*2.5;
 }
 .PlayerWindList{
   font-size: $w-text-size;

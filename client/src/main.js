@@ -19,10 +19,11 @@ let store = {
   // Lobby
   inLobby: false,
   lobby: {
-    readyToStart: false,
+    readyCheck: false,
     numPlayers: 0,
     players: [],
   },
+  start: false,
 
   // Game state
   hands: [[],[],[],[]],
@@ -34,10 +35,16 @@ let store = {
   dealerNum: 0,
   curWind: 0,
 
+  // Game prompts
+  prompt: false,
+  confirmCheck: [0,0,0,0],
+  winPrompt: false,
+
   // Player info
   playerNum: 0,
-  prompt: false,
   myTurn: false,
+
+  // Player actions
   canChow: false,
   chowTiles: [[], [], []],
   waitPong: false,

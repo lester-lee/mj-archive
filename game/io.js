@@ -27,18 +27,21 @@ function attachListeners(io, games) {
       game.addPlayer(loginInfo.username);
 
       io.emit('lobby update', {
-        readyToStart: game.players.length == 4,
+        readyCheck: game.players.length == 4,
         players: game.players,
         numPlayers: game.players.length
       });
     });
 
+    socket.on('lobby ready', info => {
+      let g = games[info.gameId];
+      let p = g.getPlayerNum(info.username);
+      g.confirmCheck[p] = 1;
 
-    socket.on('join game', id => {
-      let g = games[id];
-      io.emit('start game', g);
-      if (DEBUG) {
-        io.emit('update shownHands', [1, 1, 1, 1]);
+      if(g.confirmedAll()){
+        io.emit('start game', g);
+      }else{
+        io.emit('update confirm', g.confirmCheck)
       }
     });
 

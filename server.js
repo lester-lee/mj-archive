@@ -10,7 +10,7 @@ const attachListeners = require('./game/io');
 let games = {};
 
 app.get('/', (req, res) => {
-  //res.json(games);
+  res.json(games);
 });
 
 

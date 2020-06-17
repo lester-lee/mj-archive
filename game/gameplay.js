@@ -30,6 +30,7 @@ function createGame(id) {
     players: [],
     curPlayer: 0,
     shownHands: [0, 0, 0, 0],
+    confirmCheck: [0, 0, 0, 0],
     chowPlayer: -1,
     pongPlayer: -1,
     gongPlayer: -1,
@@ -45,7 +46,10 @@ function createGame(id) {
     },
     getPlayerNum: function (username) {
       return this.players.indexOf(username);
-    }
+    },
+    confirmedAll: function() {
+      return this.confirmCheck.indexOf(0) == -1;
+    },
   }
 }
 
