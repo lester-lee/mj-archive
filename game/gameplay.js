@@ -115,7 +115,11 @@ function progressWind(game) {
 
 // Move discard from hand to discard pile
 function handleDiscard(game, playerNum, discard) {
+  // Remove discard from hand and sort
   remove(game.hands[playerNum], (t) => t.id === discard.id);
+  game.hands[playerNum].sort(T.compareTiles);
+
+  // Update discard pile
   game.discards[playerNum].push(discard);
   game.lastDiscard = discard;
 }
@@ -132,8 +136,6 @@ function handleDraw(game){
     draw = game.wall.pop();
   }
   hand.push(draw);
-
-  hand.sort(T.compareTiles);
 }
 
 // p: num of player who chow
@@ -285,7 +287,7 @@ function findChows(hand, tile) {
   check[tile.rank] = 1;
 
   let bitmap = check.join("");
-  console.log(bitmap);
+  //console.log(bitmap);
 
   // Use bitmap to generate chow tiles
   let chowExists = false;

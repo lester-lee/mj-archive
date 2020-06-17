@@ -47,6 +47,9 @@ export default {
     bottom: -1.2em;
     right: 0;
   }
+  .Tile:nth-child(14){
+    margin-left: 10px;
+  }
 
   &.bottom{
     bottom: 0;
