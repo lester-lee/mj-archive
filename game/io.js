@@ -202,6 +202,18 @@ function attachListeners(io, games) {
 
       updateAfterAction(g);
     });
+
+    /** Game Progression */
+    socket.on('go next', info => {
+      let g = games[info.gameId];
+      G.startNextRound(g);
+
+      updateAfterAction(g);
+      io.emit('update seats', {
+        dealerNum: g.dealerNum,
+        curWind: g.curWind,
+      })
+    });
   });
 }
 

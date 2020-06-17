@@ -9,7 +9,7 @@ function createGame(id) {
   // game model?
   id = id || uuidv4();
   let wall = createWall();
-  let hands = createHands(wall);
+  let hands = createHands(wall, 0); // 0 is first dealer
   let melds = findFlowers(hands, wall);
 
   return {
@@ -76,11 +76,10 @@ function createTiles(suits, max_rank, num_copies, idx) {
   return tiles;
 }
 
-function createHands(wall) {
+function createHands(wall, dealerNum) {
   let hands = [];
   for (let i = 0; i < 4; i++) {
-    // First player gets 14 tiles
-    let size = i ? 13 : 14;
+    let size = i == dealerNum ? 14 : 13; // Dealer gets 14 tiles
     hands.push(wall.splice(0, size));
     hands[i].sort(T.compareTiles);
   }
@@ -102,15 +101,46 @@ function findFlowers(hands, wall) {
   return melds;
 }
 
+/* Game Progression */
+function startNextRound(game){
+  rotateSeats(game);
+  resetGame(game);
+  //console.log(game.dealerNum, game.curWind, game.curPlayer);
+}
+
+function resetGame(game){
+  // Reset wall and hands
+  game.wall = createWall();
+  game.hands = createHands(game.wall, game.dealerNum);
+  game.melds = findFlowers(game.hands, game.wall);
+
+  game.shownHands = [0, 0, 0, 0];
+  game.chowPlayer = -1;
+  game.pongPlayer = -1;
+  game.gongPlayer = -1;
+
+  // Reset discards
+  game.discards = [[], [], [], []];
+  game.lastDiscard = null;
+}
+
+function rotateSeats(game){
+  // Update wind if dealer is 3
+  if (game.dealerNum == 3){
+    game.curWind = (game.curWind + 1) % 4; // go to next wind
+    game.dealerNum = 0;
+  }else{
+    game.dealerNum++;
+  }
+  game.curPlayer = game.dealerNum; // dealer starts
+}
+
+
 /* Game Turn */
 function progressPlayer(game) {
   // Increment player num
   const playerNum = (game.curPlayer + 1) % 4;
   game.curPlayer = playerNum;
-}
-
-function progressWind(game) {
-  game.curWind = (game.curWind + 1) % 4;
 }
 
 // Move discard from hand to discard pile
@@ -226,9 +256,7 @@ function addToMelds(game, discard, p, tiles){
   game.melds[p] = melds.concat(tiles);
 }
 
-/**
- * Check to see if any user needs to be prompted for melds
- */
+// Check to see if any user needs to be prompted for melds
 function checkMelds(game) {
   // Check chow
   const nextPlayerNum = (game.curPlayer + 1) % 4;
@@ -335,4 +363,5 @@ module.exports = {
   handleChow,
   handlePong,
   handleGong,
+  startNextRound,
 }

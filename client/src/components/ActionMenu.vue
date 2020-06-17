@@ -1,14 +1,17 @@
 <template>
   <div class="ActionMenu">
-    <div class="ActionMenuButton" @click="showHand(store)">Show Hand</div>
+    <div class="ActionMenuButton" @click="act(store, 'show hand')">
+      Show Hand</div>
+    <div class="ActionMenuButton" @click="act(store, 'go next')">
+      Go Next</div>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    showHand: store => {
-      store.socket.emit("show hand", {
+    act: (store, action) => {
+      store.socket.emit(action, {
         gameId: store.gameId,
         playerNum: store.playerNum
       });

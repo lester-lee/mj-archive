@@ -45,6 +45,11 @@ export default function attachListeners(socket, store) {
     store.shownHands = shownHands;
   });
 
+  socket.on('update seats', info => {
+    store.dealerNum = info.dealerNum;
+    store.curWind = info.curWind;
+  })
+
   // Player Prompts
   socket.on('prompt pong', info => {
     store.prompt = store.playerNum == info.pongPlayer || store.playerNum == info.gongPlayer;
