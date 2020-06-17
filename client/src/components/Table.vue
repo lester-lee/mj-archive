@@ -5,6 +5,9 @@
       <Hand
         v-for="index in 4"
         :key="index"
+        :name="store.lobby.players[getHandPosition(
+          store.playerNum, index-1
+        )]"
         :hand="store.hands[getHandPosition(
           store.playerNum, index-1
         )]"

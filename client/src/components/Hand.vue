@@ -1,5 +1,6 @@
 <template>
   <div :class="['Hand', position]">
+    <div class="Name">{{ name }}</div>
     <ul class="Melds">
       <Tile
         v-for="tile in melds"
@@ -24,7 +25,7 @@
 <script>
 import Tile from './Tile';
 export default {
-  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing'],
+  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing', 'name'],
   components: {Tile}
 };
 </script>
@@ -40,6 +41,12 @@ export default {
   display: flex;
   justify-content: space-between;
   position: absolute;
+
+  .Name{
+    position: absolute;
+    bottom: -1.2em;
+    right: 0;
+  }
 
   &.bottom{
     bottom: 0;

@@ -20,6 +20,7 @@ export default {
   margin: auto;
   width: $table-width;
   height: $table-width;
+  color: #eee;
   //border: 1px solid red;
 }
 

@@ -31,7 +31,6 @@ $w-text-size: 16px;
   max-width: $d-max-width;
   height: $d-width;
   max-height: $d-max-width;
-  color: #eee;
 }
 .RoundWind{
   @include center-in-parent;
