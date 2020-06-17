@@ -21,6 +21,7 @@ export default {
   width: $table-width;
   height: $table-width;
   color: #eee;
+  font-size: 18px;
   //border: 1px solid red;
 }
 

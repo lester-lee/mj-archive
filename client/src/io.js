@@ -34,6 +34,7 @@ export default function attachListeners(socket, store) {
 
   socket.on('update turn', turnInfo => {
     store.myTurn = store.playerNum == turnInfo.curPlayer;
+    store.curPlayer = turnInfo.curPlayer;
     store.canChow = store.playerNum == turnInfo.chowPlayer;
     store.canPong = store.playerNum == turnInfo.pongPlayer;
     store.canGong = store.playerNum == turnInfo.gongPlayer;

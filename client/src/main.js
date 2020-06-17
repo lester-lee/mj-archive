@@ -30,6 +30,7 @@ let store = {
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
   lastDiscard: {},
+  curPlayer: 0,
   dealerNum: 0,
   curWind: 0,
 

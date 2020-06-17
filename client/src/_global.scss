@@ -1,7 +1,6 @@
-$font: Avenir,
-Helvetica,
-Arial,
-sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
+$font: 'Roboto Slab', serif;
 $background-color: rgb(255, 255, 255);
 $accent-color: rgb(250, 214, 13);
 

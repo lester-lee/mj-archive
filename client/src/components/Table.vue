@@ -19,6 +19,8 @@
         :isShowing="store.shownHands[getHandPosition(
           store.playerNum, index-1
         )] > 0"
+        :isCurrent="store.curPlayer ==
+        getHandPosition(store.playerNum, index-1)"
       />
     </div>
     <div class="DiscardPile">

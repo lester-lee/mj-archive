@@ -1,6 +1,6 @@
 <template>
   <div :class="['Hand', position]">
-    <div class="Name">{{ name }}</div>
+    <div :class="['Name', isCurrent ? '--active' : '']">{{ name }}</div>
     <ul class="Melds">
       <Tile
         v-for="tile in melds"
@@ -25,7 +25,7 @@
 <script>
 import Tile from './Tile';
 export default {
-  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing', 'name'],
+  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing', 'name', 'isCurrent'],
   components: {Tile}
 };
 </script>
@@ -46,6 +46,9 @@ export default {
     position: absolute;
     bottom: -1.2em;
     right: 0;
+    &.--active{
+      font-style: italic;
+    }
   }
   .Tile:nth-child(14){
     margin-left: 10px;
