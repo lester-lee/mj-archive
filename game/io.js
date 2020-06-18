@@ -178,7 +178,7 @@ function attachListeners(io, games) {
         console.log('chow', info.playerNum, info.options.chowType);
       }
       let g = games[info.gameId];
-      if (g.waitPong){
+      if (g.waitPong && info.playerNum != g.pongPlayer){
         socket.emit('wait pong');
         return; // TODO: better feedback for user
       }

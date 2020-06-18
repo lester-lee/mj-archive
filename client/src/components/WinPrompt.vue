@@ -3,7 +3,7 @@
     <!-- Self Declare Win -->
     <div class="WinPromptText" v-if="store.claimWin">
       {{ !store.waitConfirm ?
-        'Do you win off this discard? Your hand will be shown to everyone.' :
+        'Would you like to declare a win? Your hand will be shown to everyone.' :
         'Waiting for other responses...'
       }}
     </div>
