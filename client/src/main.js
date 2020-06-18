@@ -23,7 +23,8 @@ let store = {
     numPlayers: 0,
     players: [],
   },
-  start: false,
+  confirmCheck: [0, 0, 0, 0],
+  gameStart: false,
 
   // Game state
   hands: [[],[],[],[]],
@@ -37,12 +38,13 @@ let store = {
 
   // Game prompts
   prompt: false,
-  confirmCheck: [0,0,0,0],
   winPrompt: false,
+  waitConfirm: false,
 
   // Player info
   playerNum: 0,
   myTurn: false,
+  claimWin: false,
 
   // Player actions
   canChow: false,

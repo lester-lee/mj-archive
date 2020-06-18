@@ -119,6 +119,7 @@ function resetGame(game){
   game.melds = findFlowers(game.hands, game.wall);
 
   game.shownHands = [0, 0, 0, 0];
+  game.confirmCheck = [0, 0, 0, 0];
   game.chowPlayer = -1;
   game.pongPlayer = -1;
   game.gongPlayer = -1;

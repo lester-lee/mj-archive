@@ -7,7 +7,6 @@ export default function attachListeners(socket, store) {
 
   socket.on('start game', game => {
     store.gameStart = true;
-    store.gameId = game.id;
     socket.emit('update playerNum', {
       gameId: game.id,
       username: store.username
@@ -22,6 +21,10 @@ export default function attachListeners(socket, store) {
   socket.on('update playerNum', p => {
     store.playerNum = p;
   });
+
+  socket.on('update gameId', id => {
+    store.gameId = id;
+  })
 
   // Game Information updates
   socket.on('update hands', hands => {
@@ -54,6 +57,11 @@ export default function attachListeners(socket, store) {
   socket.on('update seats', info => {
     store.dealerNum = info.dealerNum;
     store.curWind = info.curWind;
+
+    store.confirmCheck = info.confirmCheck;
+    store.winPrompt = false;
+    store.claimWin = false;
+    store.waitConfirm = false;
   })
 
   // Player Prompts
@@ -74,4 +82,8 @@ export default function attachListeners(socket, store) {
     store.waitPong = true;
     store.prompt = true;
   });
+
+  socket.on('prompt win', info => {
+    store.winPrompt = true;
+  })
 }

@@ -2,6 +2,7 @@
   <div class="Table">
     <Debug />
     <Windicator :wind="store.curWind" :dealer="getDealerPosition(store.playerNum,store.dealerNum)" />
+    <div class="GameId">{{store.gameId}}</div>
     <div class="PlayerHands">
       <Hand
         v-for="index in 4"
@@ -49,7 +50,6 @@ import Hand from "./Hand";
 import Discard from "./Discard";
 import Windicator from "./Windicator";
 import Debug from "./Debug";
-import ActionMenu from "./ActionMenu";
 import Prompt from "./Prompt";
 import WinPrompt from "./WinPrompt";
 
@@ -73,6 +73,7 @@ export default {
     },
     promptWin: store => {
       store.winPrompt = true;
+      store.claimWin = true;
     }
   },
   components: {
@@ -81,7 +82,6 @@ export default {
     Hand,
     Discard,
     Windicator,
-    ActionMenu,
     Prompt,
     WinPrompt
   }
@@ -92,6 +92,11 @@ export default {
 .Table,
 .PlayerHands {
   @include fill-parent;
+}
+.GameId{
+  position: absolute;
+  bottom: -$t-max-width;
+  right: 10%;
 }
 .DiscardPile {
   @include center-in-parent;

@@ -1,10 +1,29 @@
 <template>
   <div class="WinPrompt" v-if="store.winPrompt">
-    <div class="WinPromptText">Do you win off this discard? Your hand will be shown to everyone.</div>
-    <ul class="WinPromptButtons">
-      <li class="WinPromptButton">Yes</li>
+    <!-- Self Declare Win -->
+    <div class="WinPromptText" v-if="store.claimWin">
+      {{ !store.waitConfirm ?
+        'Do you win off this discard? Your hand will be shown to everyone.' :
+        'Waiting for other responses...'
+      }}
+    </div>
+
+    <ul class="WinPromptButtons" v-if="store.claimWin && !store.waitConfirm">
+      <li class="WinPromptButton" @click="win(store)">Yes</li>
       <li class="WinPromptButton" @click="close(store)">No</li>
     </ul>
+
+    <!-- Other Declare Win -->
+    <div class="WinPromptText" v-if="!store.claimWin">
+      {{ !store.waitConfirm ? 'Someone has declared a win!' :
+        'Waiting for other responses...' }} <br>
+      {{ !store.waitConfirm ? 'Click to proceed to the next game.' : ''}}
+    </div>
+
+    <ul class="WinPromptButtons" v-if="!store.claimWin && !store.waitConfirm">
+      <li class="WinPromptButton" @click="proceed(store)">Proceed</li>
+    </ul>
+
   </div>
 </template>
 
@@ -17,13 +36,25 @@ export default {
   },
   methods: {
     win: store => {
-      store.socket.emit("show hand", {
+      store.waitConfirm = true;
+      store.socket.emit('show hand', {
+        gameId: store.gameId,
+        playerNum: store.playerNum
+      });
+      store.socket.emit('claim win', {
         gameId: store.gameId,
         playerNum: store.playerNum
       });
     },
     close: store => {
       store.winPrompt = false;
+    },
+    proceed: store => {
+      store.waitConfirm = true;
+      store.socket.emit('proceed', {
+        gameId: store.gameId,
+        playerNum: store.playerNum
+      });
     }
   }
 };
@@ -31,8 +62,10 @@ export default {
 
 <style lang="scss">
 .WinPrompt {
-  @include center-in-parent;
-  top: 33%;
+  position: relative;
+  top: -10%;
+  margin: 0 auto;
+  width: 50%;
 
   &Text{
     background: $accent2-color;
@@ -46,11 +79,12 @@ export default {
     display: flex;
     width: 50%;
     margin: 20px auto;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   &Button{
     padding: 10px 20px;
+    margin: 0 30px;
     background: rgba($color: $accent2-color, $alpha: 0.8);
     border: 1px solid $accent2-color;
 

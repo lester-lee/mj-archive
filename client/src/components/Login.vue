@@ -9,6 +9,7 @@
             type="text"
             id="username"
             v-model="store.username"
+            placeholder="username"
             required
           />
         </div>
@@ -21,9 +22,10 @@
     </div>
     <div class="Login" v-if="store.inLobby">
       <div
-        class="LoginField"
         v-if="store.lobby.numPlayers > 0 && store.lobby.numPlayers < 4"
-      >Waiting for {{ 4 - store.lobby.numPlayers }} more...</div>
+      >
+      Game ID: <span>{{ store.gameId }}</span><br>
+      Waiting for {{ 4 - store.lobby.numPlayers }} more...</div>
       <ul>
         <li v-for="(player, index) in store.lobby.players" :key="index"
           :class="['PlayerName',
@@ -85,7 +87,7 @@ export default {
 
 <style lang="scss">
 .Login {
-  width: 200px;
+  width: 400px;
   height: 200px;
   margin: 20vh auto;
   color: $background-color;

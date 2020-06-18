@@ -31,6 +31,8 @@ function attachListeners(io, games) {
         players: game.players,
         numPlayers: game.players.length
       });
+
+      io.emit('update gameId', game.id);
     });
 
     socket.on('lobby ready', info => {
@@ -39,6 +41,7 @@ function attachListeners(io, games) {
       g.confirmCheck[p] = 1;
 
       if(g.confirmedAll()){
+        g.confirmCheck = [0,0,0,0];
         io.emit('start game', g);
       }else{
         io.emit('update confirm', g.confirmCheck)
@@ -207,15 +210,26 @@ function attachListeners(io, games) {
     });
 
     /** Game Progression */
-    socket.on('go next', info => {
+    socket.on('claim win', info => {
       let g = games[info.gameId];
-      G.startNextRound(g);
+      g.confirmCheck[info.playerNum] = 1;
 
-      updateAfterAction(g);
-      io.emit('update seats', {
-        dealerNum: g.dealerNum,
-        curWind: g.curWind,
-      })
+      io.emit('prompt win');
+    });
+
+    socket.on('proceed', info => {
+      let g = games[info.gameId];
+      g.confirmCheck[info.playerNum] = 1;
+
+      if(g.confirmedAll()){
+        G.startNextRound(g);
+
+        updateAfterAction(g);
+        io.emit('update seats', {
+          dealerNum: g.dealerNum,
+          curWind: g.curWind,
+        });
+      }
     });
   });
 }
