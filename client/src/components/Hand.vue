@@ -1,5 +1,5 @@
 <template>
-  <div :class="['Hand', position]">
+  <div :class="['Hand', position, showDraw ? '--showDraw' : '']">
     <div :class="['Name', isCurrent ? '--active' : '']">{{ name }}</div>
     <ul class="Melds">
       <Tile
@@ -25,7 +25,7 @@
 <script>
 import Tile from './Tile';
 export default {
-  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing', 'name', 'isCurrent'],
+  props: ['hand', 'melds', 'isPlayerHand', 'position', 'isShowing', 'name', 'isCurrent', 'showDraw'],
   components: {Tile}
 };
 </script>
@@ -50,7 +50,8 @@ export default {
       font-style: italic;
     }
   }
-  .Tile:nth-child(14){
+
+  &.--showDraw .Tile:last-child{
     margin-left: 10px;
   }
 

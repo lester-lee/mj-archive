@@ -23,6 +23,7 @@
         )] > 0"
         :isCurrent="store.curPlayer ==
         getHandPosition(store.playerNum, index-1)"
+        :showDraw="index-1==0 && store.myTurn"
       />
     </div>
     <div class="DiscardPile">
