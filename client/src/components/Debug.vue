@@ -34,6 +34,10 @@
       <input type="checkbox" id="canChow" v-model="store.canChow" />
     </div>
     <div class="DebugField">
+      <label for="waitPong">waitPong</label>
+      <input type="checkbox" id="waitPong" v-model="store.waitPong" />
+    </div>
+    <div class="DebugField">
       <label for="canPong">canPong</label>
       <input type="checkbox" id="canPong" v-model="store.canPong" />
     </div>

@@ -1,11 +1,7 @@
 <template>
   <div class="Prompt" v-if="store.prompt">
-    <div class="PromptClose" @click="act(store, 'prompt close')">×</div>
-    <div class="DiscardDisplay">
-      <Tile :tile="store.lastDiscard" :show="true" />
-    </div>
+    <div class="PromptText" v-if="store.waitPong"> Wait! Someone may 碰.</div>
     <ul class="PromptActions">
-      <div v-if="store.waitPong"> Wait! Someone may 碰.</div>
       <div class="ChowActions" v-if="store.canChow">
         <li class="PromptAction" v-for="index in 3" :key="index"
           @click="act(store, '上', {chowType: index})">
@@ -18,6 +14,8 @@
         @click="act(store, '碰')">碰</li>
       <li class="PromptAction" v-if="store.canGong"
         @click="act(store, '杠')">杠</li>
+      <li class="PromptAction --close" 
+        @click="act(store, 'prompt close')">ㄨ</li>
     </ul>
   </div>
 </template>
@@ -50,63 +48,58 @@ export default {
 <style lang="scss">
 $prompt-width: 400px;
 .Prompt {
-  @include center-in-parent;
-  width: $prompt-width;
-  background: $table-color;
-  text-align: center;
-
-  border-radius: 20px;
-  border: 10px solid $accent-color;
-  padding: 10px;
+  width: 75%;
+  position: absolute;
+  bottom: 10%;
+  right: 25%;
 
   font-size: 1.5em;
 
-  .DiscardDisplay{
-    margin: 20px 0;
+  &Text{
+    text-align: right;
+    margin-bottom: 10px;
   }
 
-  &Close {
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    width: 50px;
-    height: 50px;
-
-    font-size: 2em;
-    color: rgb(214, 89, 72);
-
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(173, 71, 53);
-    }
-    &:active {
-      color: rgb(160, 36, 36);
-    }
+  &Actions{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    justify-content: end;
   }
 
   &Action{
+    border: 1px solid $accent2-color;
+    background: rgba($color: $accent2-color, $alpha: 0.8);
+
+    margin: 0 10px;
+    width: $t-max-width * 3;
+    height: $t-height * 1.2;
+
+    transform: skew(-18deg);
+
     display: flex;
-    justify-content: center; 
     align-items: center;
-    width: 50%;
-    margin: 10px auto;
+    padding-left: 15px;
 
-    border-radius: 20px;
-    line-height: $t-height + 5px;
-
-    background: rgba(255, 255, 255, 0.1);
-    color: $background-color;
-
-
-    cursor: pointer;
-    &:hover {
-      background: rgba(255, 255, 255, 0.2);
+    &.--close{
+      border: 1px solid red;
+      background: rgba($color: red, $alpha: 0.2)
     }
-    &:active {
-      background: rgba(255, 255, 255, 0.3);
+
+    &:hover{
+      cursor: pointer;
+      border: 1px solid $accent-color;
     }
+
+  }
+}
+
+.ChowActions .PromptAction{
+  width: $t-max-width * 5;
+  margin-top: 10px;
+
+  &:empty{
+    display: none;
   }
 }
 </style>
