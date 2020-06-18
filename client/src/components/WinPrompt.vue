@@ -62,9 +62,9 @@ export default {
 
 <style lang="scss">
 .WinPrompt {
-  position: relative;
-  top: -10%;
-  margin: 0 auto;
+  @include center-in-parent;
+  top: 25%;
+
   width: 50%;
 
   &Text{

@@ -20,7 +20,7 @@ function createGame(id) {
     hands: hands,
     melds: melds,
     discards: [[], [], [], []],
-    lastDiscard: null,
+    lastDiscard: new T.Tile(1, 1, -1, true),
 
     // Seating
     curWind: 0,
@@ -126,7 +126,7 @@ function resetGame(game){
 
   // Reset discards
   game.discards = [[], [], [], []];
-  game.lastDiscard = null;
+  game.lastDiscard = new T.Tile(1,1,-1,true);
 }
 
 function rotateSeats(game){
