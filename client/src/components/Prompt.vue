@@ -56,8 +56,14 @@ $prompt-width: 400px;
   font-size: 1.5em;
 
   &Text{
+    position: relative;
+    left: 50%;
+    width: 50%;
     text-align: right;
     margin-bottom: 10px;
+
+    background: rgba($color: $accent2-color, $alpha: 0.8);
+    padding-right: 5px;
   }
 
   &Actions{

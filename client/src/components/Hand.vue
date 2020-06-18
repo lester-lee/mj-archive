@@ -1,5 +1,5 @@
 <template>
-  <div :class="['Hand', position, showDraw ? '--showDraw' : '']">
+  <div :class="['Hand', position]">
     <div :class="['Name', isCurrent ? '--active' : '']">{{ name }}</div>
     <ul class="Melds">
       <Tile
@@ -9,7 +9,7 @@
         :show="true"
       />
     </ul>
-    <ul>
+    <ul :class="showDraw ? '--showDraw' : ''">
       <Tile
         v-for="tile in hand"
         :key="tile.id"
@@ -51,7 +51,7 @@ export default {
     }
   }
 
-  &.--showDraw .Tile:last-child{
+  .--showDraw .Tile:last-child{
     margin-left: 10px;
   }
 
