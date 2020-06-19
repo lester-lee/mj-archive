@@ -48,17 +48,15 @@ export default {
 <style lang="scss">
 $prompt-width: 400px;
 .Prompt {
-  width: 75%;
+  width: 30%;
   position: absolute;
-  bottom: 10%;
-  right: 25%;
+  bottom: 0;
+  right: -35%;
 
   font-size: 1.5em;
 
   &Text{
     position: relative;
-    left: 50%;
-    width: 50%;
     text-align: right;
     margin-bottom: 10px;
 
@@ -68,16 +66,14 @@ $prompt-width: 400px;
 
   &Actions{
     display: flex;
-    flex-flow: row wrap;
-    align-items: flex-end;
-    justify-content: end;
+    flex-flow: column; 
   }
 
   &Action{
     border: 1px solid $accent2-color;
     background: rgba($color: $accent2-color, $alpha: 0.8);
 
-    margin: 0 10px;
+    margin-top: 8px;
     width: $t-max-width * 3;
     height: $t-height * 1.2;
 
