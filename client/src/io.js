@@ -58,6 +58,7 @@ export default function attachListeners(socket, store) {
     store.dealerNum = info.dealerNum;
     store.curWind = info.curWind;
 
+    store.shownHands = [0,0,0,0];
     store.confirmCheck = info.confirmCheck;
     store.winPrompt = false;
     store.claimWin = false;
