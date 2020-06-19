@@ -241,7 +241,7 @@ function handlePong(game, p){
 function handleGong(game, p){
   game.waitPong = false;
 
-  let discard = game.discards[prevPlayerNum].pop();
+  let discard = game.discards[game.curPlayer].pop();
 
   game.curPlayer = p;
 

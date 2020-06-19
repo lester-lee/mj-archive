@@ -1,5 +1,5 @@
 const G = require('./gameplay');
-const DEBUG = false;
+const DEBUG = true;
 
 function attachListeners(io, games) {
 
@@ -205,6 +205,7 @@ function attachListeners(io, games) {
 
       let g = games[info.gameId];
       G.handleGong(g, info.playerNum);
+      G.handleDraw(g);
 
       updateAfterAction(g);
     });

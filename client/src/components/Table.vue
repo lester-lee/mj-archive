@@ -1,6 +1,6 @@
 <template>
   <div class="Table">
-    <!-- <Debug /> -->
+    <Debug v-if="store.debug" />
     <Windicator :wind="store.curWind" :dealer="getDealerPosition(store.playerNum,store.dealerNum)" />
     <div class="GameId">{{store.gameId}}</div>
     <div class="PlayerHands">
