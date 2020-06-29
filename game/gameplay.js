@@ -25,6 +25,7 @@ function createGame(id) {
     // Seating
     curWind: 0,
     dealerNum: 0,
+    winner: -1,
 
     // Players
     players: [],
@@ -130,6 +131,9 @@ function resetGame(game){
 }
 
 function rotateSeats(game){
+  if (game.winner == game.dealerNum){
+    return; // Nothing happens if dealer wins
+  }
   // Update wind if dealer is 3
   if (game.dealerNum == 3){
     game.curWind = (game.curWind + 1) % 4; // go to next wind

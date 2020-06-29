@@ -12,7 +12,7 @@ const socket = io('localhost:4000');
 
 // Game state
 let store = {
-  debug: true,
+  debug: false,
   gameId: 'asdf',
   username: 'username',
   socket: socket,
@@ -29,7 +29,7 @@ let store = {
 
   // Game state
   hands: [[],[],[],[]],
-  shownHands: [1, 1, 1, 1],
+  shownHands: [0, 0, 0, 0],
   melds: [[],[],[],[]],
   discards: [[],[],[],[]],
   lastDiscard: {},

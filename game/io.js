@@ -1,5 +1,5 @@
 const G = require('./gameplay');
-const DEBUG = true;
+const DEBUG = false;
 
 function attachListeners(io, games) {
 
@@ -214,6 +214,7 @@ function attachListeners(io, games) {
     socket.on('claim win', info => {
       let g = games[info.gameId];
       g.confirmCheck[info.playerNum] = 1;
+      g.winner = info.playerNum;
 
       io.emit('prompt win');
     });
