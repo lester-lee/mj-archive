@@ -9,14 +9,6 @@ const PORT = process.env.PORT || 4000;
 
 const attachListeners = require('./game/io');
 
-/*
-const serveStatic = require('serve-static');
-if (!DEBUG) {
-  app.use(serveStatic(__dirname + "/client/dist"))
-}
-*/
-
-
 // Priority serve any static files
 if (!DEBUG){
   app.use(express.static(path.resolve(__dirname, './client/dist')));
@@ -34,13 +26,10 @@ if (DEBUG) {
   });
 }
 
-/*
 // All remaining requests get sent to Vue, so it can handle routing
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, "./client/dist/index.html"));
 })
-*/
-
 
 http.listen(PORT, () => {
   console.log(`${DEBUG ? 'dev server' : 'heroku' + process.pid} listening on ${PORT}`);
