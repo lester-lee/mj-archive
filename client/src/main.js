@@ -4,12 +4,14 @@ import router from './router';
 import io from 'socket.io-client';
 import attachListeners from './io';
 
+const LOCAL = false;
+
 Vue.config.productionTip = false;
 Vue.prototype.log = console.log;
 
 // Socket connections
-const PORT = process.env.PORT || 4000;
-const socket = io('https://buggy-mj.herokuapp.com:{}'.format(PORT));
+let server_url = LOCAL ? "localhost:4000" : "https://buggy-mj.herokuapp.com";
+const socket = io(server_url);
 
 // Game state
 let store = {
