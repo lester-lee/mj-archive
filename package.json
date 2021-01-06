@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "heroku-postbuild": "cd client && ./build.sh"
+    "heroku-postbuild": "cd client && bash build.sh"
   },
   "cacheDirectories": [
     "node_modules",
