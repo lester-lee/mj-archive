@@ -8,7 +8,8 @@ Vue.config.productionTip = false;
 Vue.prototype.log = console.log;
 
 // Socket connections
-const socket = io('localhost:4000');
+const PORT = process.env.PORT || 4000;
+const socket = io('https://buggy-mj.herokuapp.com:{}'.format(PORT));
 
 // Game state
 let store = {
