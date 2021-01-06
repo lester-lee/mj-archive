@@ -33,7 +33,7 @@
           {{player}}
         </li>
       </ul>
-      <button v-if="store.lobby.readyCheck" type="submit" @click.stop.prevent="sendReady()">Ready!</button>
+      <button id="ready" v-if="store.lobby.readyCheck" type="submit" @click.stop.prevent="sendReady()">Ready!</button>
     </div>
   </div>
 </template>
