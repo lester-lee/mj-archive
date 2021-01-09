@@ -9,3 +9,6 @@
 
 # In Progress / Completed
   - [x] Working on migrating from socket.io 2 to 3
+  - [ ] Handle draw last tile
+    - [x] Raise flag that last tile drawn & update hand
+    - [ ] Handle UI to move onto next round

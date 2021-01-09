@@ -5,6 +5,13 @@ const uuidv4 = require('uuid/v4');
 const remove = require('lodash/remove');
 const shuffle = require('lodash/shuffle');
 
+// Constants
+const EMPTY = -1;
+const EAST = 0;
+const SOUTH = 1;
+const WEST = 2;
+const NORTH = 3;
+
 function createGame(id) {
   // game model?
   id = id || uuidv4();
@@ -17,24 +24,25 @@ function createGame(id) {
 
     // Tiles
     wall: wall,
+    isWallEmpty: false,
     hands: hands,
     melds: melds,
     discards: [[], [], [], []],
     lastDiscard: new T.Tile(1, 1, -1, true),
 
     // Seating
-    curWind: 0,
+    curWind: EAST,
     dealerNum: 0,
-    winner: -1,
+    winner: EMPTY,
 
     // Players
     players: [],
-    curPlayer: 0,
+    curPlayer: EAST,
     shownHands: [0, 0, 0, 0],
     confirmCheck: [0, 0, 0, 0],
-    chowPlayer: -1,
-    pongPlayer: -1,
-    gongPlayer: -1,
+    chowPlayer: EMPTY,
+    pongPlayer: EMPTY,
+    gongPlayer: EMPTY,
 
     // Turn Management
     waitPong: false,
@@ -121,9 +129,9 @@ function resetGame(game){
 
   game.shownHands = [0, 0, 0, 0];
   game.confirmCheck = [0, 0, 0, 0];
-  game.chowPlayer = -1;
-  game.pongPlayer = -1;
-  game.gongPlayer = -1;
+  game.chowPlayer = EMPTY;
+  game.pongPlayer = EMPTY;
+  game.gongPlayer = EMPTY;
 
   // Reset discards
   game.discards = [[], [], [], []];
@@ -134,10 +142,10 @@ function rotateSeats(game){
   if (game.winner == game.dealerNum){
     return; // Nothing happens if dealer wins
   }
-  // Update wind if dealer is 3
-  if (game.dealerNum == 3){
+  // Update wind if dealer is North
+  if (game.dealerNum == NORTH){
     game.curWind = (game.curWind + 1) % 4; // go to next wind
-    game.dealerNum = 0;
+    game.dealerNum = EAST;
   }else{
     game.dealerNum++;
   }
@@ -168,13 +176,23 @@ function handleDraw(game){
   const hand = game.hands[playerNum];
   const meld = game.melds[playerNum];
 
-  // Keep adding flowers to melds if drawn
-  let draw = game.wall.pop();
-  while (draw.suit >= T.FLOWER) {
-    meld.push(draw);
-    draw = game.wall.pop();
+  if (game.wall.length <= 1){ // Check if last tile
+    let draw = game.wall.pop();
+    if (draw.suit >= T.FLOWER){
+      meld.push(draw);
+    }else{
+      hand.push(draw);
+    }
+    game.isWallEmpty = true;
+  }else{
+    // Keep adding flowers to melds if drawn
+    let draw = game.wall.pop();
+    while (draw.suit >= T.FLOWER) {
+      meld.push(draw);
+      draw = game.wall.pop();
+    }
+    hand.push(draw);
   }
-  hand.push(draw);
 }
 
 // p: num of player who chow
